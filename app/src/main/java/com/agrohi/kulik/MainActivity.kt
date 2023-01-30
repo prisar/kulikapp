@@ -47,7 +47,9 @@ fun Home() {
                 .padding(10.dp)
         )
 
-        Text("Wiki for outsiders")
+        Text("Kulik is a river in Raiganj town of West bengal. It used to be an important port" +
+                "for uttar dinajpur district. Raiganj town has developed impressively in recent years." +
+                "There is a bird santurary besides the river.")
     }
 }
 
