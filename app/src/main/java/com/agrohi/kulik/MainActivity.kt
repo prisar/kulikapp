@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -100,16 +101,18 @@ fun Home() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 16.dp)
-                .height(150.dp)
+                .height(250.dp)
         ) {
             Column(
                 modifier = Modifier.padding(all = 10.dp),
-                verticalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Row(horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.Top,
-                    modifier = Modifier.fillMaxWidth().fillMaxHeight(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(20.dp),
                 ) {
                     Text(text = "History",
                         style = TextStyle(
@@ -119,6 +122,15 @@ fun Home() {
                         )
                     )
 
+
+                }
+
+                Row(horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Top,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp),
+                ) {
                     Text(
                         "Kulik is a river in Raiganj town of West bengal. It used to be an important port" +
                                 "for uttar dinajpur district. Raiganj town has developed impressively in recent years." +
@@ -128,6 +140,24 @@ fun Home() {
                     )
                 }
 
+                Divider(
+                    color = LightBlueBg,
+                    thickness = 1.dp,
+                    startIndent = 5.dp
+                )
+
+                Row(horizontalArrangement = Arrangement.Start,
+                    verticalAlignment = Alignment.Top,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                ) {
+                    Text(
+                        "Radhikapur railway station is getting new platform",
+                        style = TextStyle(color = Black),
+                        modifier = Modifier.padding(12.dp)
+                    )
+                }
             }
         }
     }
