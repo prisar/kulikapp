@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">kulik</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="profile">Profile</string>
+    <string name="main">Main</string>
+    <string name="title_activity_profile">ProfileActivity</string>
 </resources>
