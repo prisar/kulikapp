@@ -42,7 +42,7 @@ fun Profile() {
     var userData: String  by remember { mutableStateOf("") }
 
     db.collection("users")
-        .document("")
+        .document("VTlIMNIsGRNiDLMb5lGKZ1Wgg5G3")
         .get()
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {

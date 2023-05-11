@@ -11,6 +11,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Share
@@ -32,6 +33,7 @@ import com.agrohi.kulik.ui.theme.LightGreen
 sealed class Screen(val route: String, val icon: ImageVector, @StringRes val resourceId: Int) {
     object Profile : Screen("profile", icon = Icons.Filled.AccountCircle, R.string.profile)
     object Main : Screen("main", icon = Icons.Filled.Home, R.string.main)
+    object Feed : Screen("feed", icon = Icons.Filled.Favorite, R.string.feed)
 }
 
 @Composable
@@ -41,6 +43,7 @@ fun AppNavGraph(
 
     val items = listOf(
         Screen.Main,
+        Screen.Feed,
         Screen.Profile,
     )
 
@@ -82,7 +85,7 @@ fun AppNavGraph(
     ) { innerPadding ->
         NavHost(navController, startDestination = Screen.Main.route, Modifier.padding(innerPadding)) {
             composable(Screen.Main.route) { Home()  }
-//            composable(Screen.Measure.route) { Measure() }
+            composable(Screen.Feed.route) { Feed() }
             composable(Screen.Profile.route) { ProfileScreen(
                 onNavigateToAbout = { navController.navigate("About") },
                 /*...*/
