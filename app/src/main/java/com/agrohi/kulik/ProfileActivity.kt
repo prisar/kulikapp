@@ -1,6 +1,8 @@
 package com.agrohi.kulik
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,9 +10,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import com.agrohi.kulik.ui.theme.KulikTheme
+import com.google.firebase.firestore.FirebaseFirestore
+
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +38,21 @@ class ProfileActivity : ComponentActivity() {
 
 @Composable
 fun Profile() {
-    Text(
-        text = "Hello !",
-    )
+    val db = FirebaseFirestore.getInstance()
+    var userData: String  by remember { mutableStateOf("") }
+
+    db.collection("users")
+        .document("")
+        .get()
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                var document = task.result
+                Log.d(TAG, document.id + " => " + document.data)
+                userData = document.data.toString()
+            } else {
+                Log.w(TAG, "Error getting documents.", task.exception)
+            }
+        }
+
+    Text(text = userData)
 }
