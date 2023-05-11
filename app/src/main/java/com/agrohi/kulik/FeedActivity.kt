@@ -25,7 +25,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -81,15 +83,16 @@ fun Feed() {
         .addOnCompleteListener() { task ->
             if (task.isSuccessful) {
                 for (document in task.result) {
-                    posts.add(Post(
-                        document.data["displayName"].toString(),
-                        document.data["avatar"].toString(),
-                        document.data["message"].toString(),
-                        document.data["type"].toString(),
-                        document.data["userId"].toString(),
-                        document.data["views"].toString(),
-                        document.data["likes"].toString(),
-                    ))
+                    if (document.data["displayName"] != null)
+                        posts.add(Post(
+                            document.data["displayName"].toString(),
+                            document.data["avatar"].toString(),
+                            document.data["message"].toString(),
+                            document.data["type"].toString(),
+                            document.data["userId"].toString(),
+                            document.data["views"].toString(),
+                            document.data["likes"].toString(),
+                        ))
                     Log.d(ContentValues.TAG, document.id + " => " + document.data)
                 }
             } else {
@@ -131,8 +134,10 @@ fun Feed() {
                                 .clickable(onClick = {})
                                 .fillMaxHeight(),
                         )
+
+                        Text(post.name, modifier = Modifier.padding(10.dp))
                     }
-                    Row(modifier = Modifier.height(100.dp).fillMaxWidth(),
+                    Row(modifier = Modifier.height(120.dp).fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center) {
                         Text(post.message)
@@ -146,6 +151,19 @@ fun Feed() {
                             tint = Color.Blue,
                             modifier = Modifier.size(28.dp)
                         )
+                        Text(post.likes)
+                        Icon(imageVector = Icons.Filled.Person,
+                            contentDescription = post.likes,
+                            tint = Color.Blue,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Text(post.views)
+                        Icon(imageVector = Icons.Filled.Warning,
+                            contentDescription = post.likes,
+                            tint = Color.Blue,
+                            modifier = Modifier.size(28.dp)
+                        )
+                        Text("Report")
                     }
                 }
             }
