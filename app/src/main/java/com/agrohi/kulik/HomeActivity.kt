@@ -1,5 +1,7 @@
 package com.agrohi.kulik
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -23,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -56,6 +59,8 @@ fun Home() {
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.background(LightBlueBg)
     ) {
+        val context = LocalContext.current
+
         androidx.compose.material.Text("Kulik app for raiganj", style = TextStyle(color = Color.Black))
 
         Image(
@@ -74,13 +79,17 @@ fun Home() {
                 .padding(all = 16.dp)
                 .height(75.dp)
                 .clickable() {
-//                context.startActivity(Intent(context, MapActivity::class.java).putExtra("url", "https://agrohikulik.web.app/raiganj_06/${dialogMouza.name}/${it}/MouzaMap.html"))
-//                openDialog.value = false
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=com.agrohi.kulik")
+                            )
+                        )
                 }) {
             Column(
                 modifier = Modifier.padding(all = 10.dp),
                 verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 androidx.compose.material.Text(
                     text = "Do you like this app?",
