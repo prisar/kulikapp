@@ -13,8 +13,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -83,13 +81,19 @@ fun AppNavGraph(
             }
         }
     ) { innerPadding ->
-        NavHost(navController, startDestination = Screen.Main.route, Modifier.padding(innerPadding)) {
-            composable(Screen.Main.route) { Home()  }
+        NavHost(
+            navController,
+            startDestination = Screen.Main.route,
+            Modifier.padding(innerPadding)
+        ) {
+            composable(Screen.Main.route) { Home() }
             composable(Screen.Feed.route) { Feed() }
-            composable(Screen.Profile.route) { ProfileScreen(
-                onNavigateToAbout = { navController.navigate("About") },
-                /*...*/
-            ) }
+            composable(Screen.Profile.route) {
+                ProfileScreen(
+                    onNavigateToAbout = { navController.navigate("About") },
+                    /*...*/
+                )
+            }
 
         }
     }

@@ -2,13 +2,10 @@ package com.agrohi.kulik
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings.Global.getString
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,7 +19,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,17 +32,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
@@ -73,7 +64,16 @@ class FeedActivity : ComponentActivity() {
     }
 }
 
-data class Post(val id: String, val name: String, val avatar: String, val message: String, val type: String, val userId: String, val views: String, val likes: String)
+data class Post(
+    val id: String,
+    val name: String,
+    val avatar: String,
+    val message: String,
+    val type: String,
+    val userId: String,
+    val views: String,
+    val likes: String
+)
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -89,16 +89,18 @@ fun Feed() {
             if (task.isSuccessful) {
                 for (document in task.result) {
                     if (document.data["displayName"] != null && document.data["reported"] != true)
-                        posts.add(Post(
-                            document.id,
-                            document.data["displayName"].toString(),
-                            document.data["avatar"].toString(),
-                            document.data["message"].toString(),
-                            document.data["type"].toString(),
-                            document.data["userId"].toString(),
-                            document.data["views"].toString(),
-                            document.data["likes"].toString(),
-                        ))
+                        posts.add(
+                            Post(
+                                document.id,
+                                document.data["displayName"].toString(),
+                                document.data["avatar"].toString(),
+                                document.data["message"].toString(),
+                                document.data["type"].toString(),
+                                document.data["userId"].toString(),
+                                document.data["views"].toString(),
+                                document.data["likes"].toString(),
+                            )
+                        )
                     Log.d(ContentValues.TAG, document.id + " => " + document.data)
                 }
             } else {
@@ -150,7 +152,9 @@ fun Feed() {
                             Text(post.name, modifier = Modifier.padding(10.dp))
                         }
                         Row(
-                            modifier = Modifier.height(120.dp).fillMaxWidth(),
+                            modifier = Modifier
+                                .height(120.dp)
+                                .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
@@ -159,31 +163,37 @@ fun Feed() {
                         Row(
                             verticalAlignment = Alignment.Bottom,
                             horizontalArrangement = Arrangement.Start,
-                            modifier = Modifier.height(30.dp).fillMaxWidth()
+                            modifier = Modifier
+                                .height(30.dp)
+                                .fillMaxWidth()
                         ) {
                             Icon(imageVector = Icons.Filled.ThumbUp,
                                 contentDescription = post.likes,
                                 tint = Color.Blue,
-                                modifier = Modifier.size(28.dp).clickable() {
-                                    db.collection("posts").document(post.id)
-                                        .set(
-                                            hashMapOf("likes" to post.likes + 1),
-                                            SetOptions.merge()
-                                        )
-                                        .addOnSuccessListener {
-                                            Log.d(
-                                                TAG,
-                                                "DocumentSnapshot " + post.id + " successfully written!"
+                                modifier = Modifier
+                                    .size(28.dp)
+                                    .clickable() {
+                                        db
+                                            .collection("posts")
+                                            .document(post.id)
+                                            .set(
+                                                hashMapOf("likes" to post.likes + 1),
+                                                SetOptions.merge()
                                             )
-                                        }
-                                        .addOnFailureListener { e ->
-                                            Log.w(
-                                                TAG,
-                                                "Error writing document",
-                                                e
-                                            )
-                                        }
-                                }
+                                            .addOnSuccessListener {
+                                                Log.d(
+                                                    TAG,
+                                                    "DocumentSnapshot " + post.id + " successfully written!"
+                                                )
+                                            }
+                                            .addOnFailureListener { e ->
+                                                Log.w(
+                                                    TAG,
+                                                    "Error writing document",
+                                                    e
+                                                )
+                                            }
+                                    }
                             )
                             Text(post.likes)
                             Icon(
@@ -196,25 +206,29 @@ fun Feed() {
                             Icon(imageVector = Icons.Filled.Warning,
                                 contentDescription = post.likes,
                                 tint = Color.Blue,
-                                modifier = Modifier.size(28.dp).clickable() {
-                                    db.collection("posts").document(post.id)
-                                        .set(hashMapOf("reported" to true), SetOptions.merge())
-                                        .addOnSuccessListener {
-                                            Log.d(
-                                                TAG,
-                                                "DocumentSnapshot " + post.id + " successfully written!"
-                                            )
-                                        }
-                                        .addOnFailureListener { e ->
-                                            Log.w(
-                                                TAG,
-                                                "Error writing document",
-                                                e
-                                            )
-                                        }
+                                modifier = Modifier
+                                    .size(28.dp)
+                                    .clickable() {
+                                        db
+                                            .collection("posts")
+                                            .document(post.id)
+                                            .set(hashMapOf("reported" to true), SetOptions.merge())
+                                            .addOnSuccessListener {
+                                                Log.d(
+                                                    TAG,
+                                                    "DocumentSnapshot " + post.id + " successfully written!"
+                                                )
+                                            }
+                                            .addOnFailureListener { e ->
+                                                Log.w(
+                                                    TAG,
+                                                    "Error writing document",
+                                                    e
+                                                )
+                                            }
 
-                                    posts.drop(index)
-                                }
+                                        posts.drop(index)
+                                    }
                             )
                             Text("Report")
                         }

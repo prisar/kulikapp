@@ -20,7 +20,6 @@ import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,7 +29,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.agrohi.kulik.ui.theme.KulikTheme
@@ -43,7 +41,10 @@ class HomeActivity : ComponentActivity() {
         setContent {
             KulikTheme {
                 // A surface container using the 'background' color from the theme
-                Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     Home()
                 }
             }
@@ -61,8 +62,6 @@ fun Home() {
     ) {
         val context = LocalContext.current
 
-        androidx.compose.material.Text("Kulik app for raiganj", style = TextStyle(color = Color.Black))
-
         Image(
             painter = painterResource(id = R.drawable.kulik),
             contentDescription = "train",
@@ -79,12 +78,12 @@ fun Home() {
                 .padding(all = 16.dp)
                 .height(75.dp)
                 .clickable() {
-                        context.startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=com.agrohi.kulik")
-                            )
+                    context.startActivity(
+                        Intent(
+                            Intent.ACTION_VIEW,
+                            Uri.parse("market://details?id=com.agrohi.kulik")
                         )
+                    )
                 }) {
             Column(
                 modifier = Modifier.padding(all = 10.dp),
@@ -119,13 +118,15 @@ fun Home() {
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(horizontalArrangement = Arrangement.Start,
+                Row(
+                    horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(20.dp),
                 ) {
-                    androidx.compose.material.Text(text = "History",
+                    androidx.compose.material.Text(
+                        text = "History",
                         style = TextStyle(
                             color = Color.Black,
                             fontWeight = FontWeight.Bold,
@@ -136,7 +137,8 @@ fun Home() {
 
                 }
 
-                Row(horizontalArrangement = Arrangement.Start,
+                Row(
+                    horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -157,7 +159,8 @@ fun Home() {
                     startIndent = 5.dp
                 )
 
-                Row(horizontalArrangement = Arrangement.Start,
+                Row(
+                    horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.Top,
                     modifier = Modifier
                         .fillMaxWidth()
