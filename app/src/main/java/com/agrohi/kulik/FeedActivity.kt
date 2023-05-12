@@ -1,6 +1,7 @@
 package com.agrohi.kulik
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.Global.getString
@@ -8,6 +9,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,6 +23,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -46,10 +49,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.agrohi.kulik.ui.theme.KulikTheme
+import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.SetOptions
 
 class FeedActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,7 +73,7 @@ class FeedActivity : ComponentActivity() {
     }
 }
 
-data class Post(val name: String, val avatar: String, val message: String, val type: String, val userId: String, val views: String, val likes: String)
+data class Post(val id: String, val name: String, val avatar: String, val message: String, val type: String, val userId: String, val views: String, val likes: String)
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -83,8 +88,9 @@ fun Feed() {
         .addOnCompleteListener() { task ->
             if (task.isSuccessful) {
                 for (document in task.result) {
-                    if (document.data["displayName"] != null)
+                    if (document.data["displayName"] != null && document.data["reported"] != true)
                         posts.add(Post(
+                            document.id,
                             document.data["displayName"].toString(),
                             document.data["avatar"].toString(),
                             document.data["message"].toString(),
@@ -100,70 +106,118 @@ fun Feed() {
             }
         }
 
-    LazyColumn() {
-        items(posts) { post ->
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.background(LightBlueBg)
+    ) {
+        LazyColumn() {
+            itemsIndexed(posts) { index, post ->
 
-            Card(
-                shape = RoundedCornerShape(10.dp),
-                elevation = 1.dp,
-                backgroundColor = Color.White,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 16.dp)
-                    .height(250.dp)
-            ) {
-                Column(modifier = Modifier.padding(all = 10.dp),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                Card(
+                    shape = RoundedCornerShape(10.dp),
+                    elevation = 1.dp,
+                    backgroundColor = Color.White,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 16.dp)
+                        .height(250.dp)
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.Top,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(70.dp),
+                    Column(
+                        modifier = Modifier.padding(all = 10.dp),
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        GlideImage(
-                            model = post.avatar,
-                            contentDescription = post.message,
+                        Row(
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.Top,
                             modifier = Modifier
-                                .size(64.dp)
-                                .clip(CircleShape)
-                                .border(2.dp, Color.Gray, CircleShape)
-                                .padding(1.dp)
-                                .clickable(onClick = {})
-                                .fillMaxHeight(),
-                        )
+                                .fillMaxWidth()
+                                .height(70.dp),
+                        ) {
+                            GlideImage(
+                                model = post.avatar,
+                                contentDescription = post.message,
+                                modifier = Modifier
+                                    .size(64.dp)
+                                    .clip(CircleShape)
+                                    .border(2.dp, Color.Gray, CircleShape)
+                                    .padding(1.dp)
+                                    .clickable(onClick = {})
+                                    .fillMaxHeight(),
+                            )
 
-                        Text(post.name, modifier = Modifier.padding(10.dp))
-                    }
-                    Row(modifier = Modifier.height(120.dp).fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center) {
-                        Text(post.message)
-                    }
-                    Row(verticalAlignment = Alignment.Bottom,
-                        horizontalArrangement = Arrangement.Start,
-                        modifier = Modifier.height(30.dp).fillMaxWidth()
-                    ) {
-                        Icon(imageVector = Icons.Filled.ThumbUp,
-                            contentDescription = post.likes,
-                            tint = Color.Blue,
-                            modifier = Modifier.size(28.dp)
-                        )
-                        Text(post.likes)
-                        Icon(imageVector = Icons.Filled.Person,
-                            contentDescription = post.likes,
-                            tint = Color.Blue,
-                            modifier = Modifier.size(28.dp)
-                        )
-                        Text(post.views)
-                        Icon(imageVector = Icons.Filled.Warning,
-                            contentDescription = post.likes,
-                            tint = Color.Blue,
-                            modifier = Modifier.size(28.dp)
-                        )
-                        Text("Report")
+                            Text(post.name, modifier = Modifier.padding(10.dp))
+                        }
+                        Row(
+                            modifier = Modifier.height(120.dp).fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(post.message)
+                        }
+                        Row(
+                            verticalAlignment = Alignment.Bottom,
+                            horizontalArrangement = Arrangement.Start,
+                            modifier = Modifier.height(30.dp).fillMaxWidth()
+                        ) {
+                            Icon(imageVector = Icons.Filled.ThumbUp,
+                                contentDescription = post.likes,
+                                tint = Color.Blue,
+                                modifier = Modifier.size(28.dp).clickable() {
+                                    db.collection("posts").document(post.id)
+                                        .set(
+                                            hashMapOf("likes" to post.likes + 1),
+                                            SetOptions.merge()
+                                        )
+                                        .addOnSuccessListener {
+                                            Log.d(
+                                                TAG,
+                                                "DocumentSnapshot " + post.id + " successfully written!"
+                                            )
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.w(
+                                                TAG,
+                                                "Error writing document",
+                                                e
+                                            )
+                                        }
+                                }
+                            )
+                            Text(post.likes)
+                            Icon(
+                                imageVector = Icons.Filled.Person,
+                                contentDescription = post.likes,
+                                tint = Color.Blue,
+                                modifier = Modifier.size(28.dp)
+                            )
+                            Text(post.views)
+                            Icon(imageVector = Icons.Filled.Warning,
+                                contentDescription = post.likes,
+                                tint = Color.Blue,
+                                modifier = Modifier.size(28.dp).clickable() {
+                                    db.collection("posts").document(post.id)
+                                        .set(hashMapOf("reported" to true), SetOptions.merge())
+                                        .addOnSuccessListener {
+                                            Log.d(
+                                                TAG,
+                                                "DocumentSnapshot " + post.id + " successfully written!"
+                                            )
+                                        }
+                                        .addOnFailureListener { e ->
+                                            Log.w(
+                                                TAG,
+                                                "Error writing document",
+                                                e
+                                            )
+                                        }
+
+                                    posts.drop(index)
+                                }
+                            )
+                            Text("Report")
+                        }
                     }
                 }
             }
