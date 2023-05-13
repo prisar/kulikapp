@@ -2,6 +2,7 @@ package com.agrohi.kulik
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -38,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
@@ -80,6 +82,7 @@ data class Post(
 fun Feed() {
     val db = FirebaseFirestore.getInstance()
     val posts = remember { mutableStateListOf<Post>() }
+    val context = LocalContext.current
 
     db.collection("posts")
         .orderBy("createdAt", Query.Direction.DESCENDING)
@@ -145,7 +148,14 @@ fun Feed() {
                                     .clip(CircleShape)
                                     .border(2.dp, Color.Gray, CircleShape)
                                     .padding(1.dp)
-                                    .clickable(onClick = {})
+                                    .clickable(onClick = {
+                                        context.startActivity(
+                                            Intent(
+                                                context,
+                                                UserActivity::class.java
+                                            ).putExtra("userId", post.userId)
+                                        )
+                                    })
                                     .fillMaxHeight(),
                             )
 
@@ -177,7 +187,7 @@ fun Feed() {
                                             .collection("posts")
                                             .document(post.id)
                                             .set(
-                                                hashMapOf("likes" to post.likes + 1),
+                                                hashMapOf("likes" to post.likes.toString().toInt() + 1),
                                                 SetOptions.merge()
                                             )
                                             .addOnSuccessListener {
