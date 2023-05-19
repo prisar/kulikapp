@@ -12,6 +12,11 @@
         android:theme="@style/Theme.Kulik"
         tools:targetApi="31">
         <activity
+            android:name=".EmailPasswordActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.Kulik" />
+        <activity
             android:name=".UserActivity"
             android:exported="false"
             android:label="@string/title_activity_user"

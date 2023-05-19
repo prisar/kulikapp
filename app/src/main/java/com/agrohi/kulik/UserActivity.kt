@@ -3,6 +3,7 @@ package com.agrohi.kulik
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -35,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import com.agrohi.kulik.ui.theme.KulikTheme
@@ -80,6 +82,7 @@ fun UserDetails(userId: String) {
     }
     var reported by remember { mutableStateOf(false) }
     val db = FirebaseFirestore.getInstance()
+    val context = LocalContext.current
 
     db.collection("users").document(userId)
         .get()
@@ -151,6 +154,11 @@ fun UserDetails(userId: String) {
                                 .document(userId)
                                 .set(hashMapOf("reported" to true), SetOptions.merge())
                                 .addOnSuccessListener {
+                                    Toast.makeText(
+                                        context,
+                                        "User is reported successfully.",
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
                                     Log.d(
                                         ContentValues.TAG,
                                         "DocumentSnapshot " + userId + " successfully written!"
