@@ -152,7 +152,7 @@ fun Feed() {
                                         context.startActivity(
                                             Intent(
                                                 context,
-                                                EmailPasswordActivity::class.java
+                                                UserActivity::class.java
                                             ).putExtra("userId", post.userId)
                                         )
                                     })
