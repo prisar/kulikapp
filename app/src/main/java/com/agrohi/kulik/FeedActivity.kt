@@ -83,6 +83,9 @@ data class Post(
     val userId: String,
     val views: String,
     val likes: String,
+    val photoUrl: String,
+    val video: String,
+    val thumbnail: String,
 )
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -129,12 +132,13 @@ fun Feed() {
 
     db.collection("posts")
         .orderBy("createdAt", Query.Direction.DESCENDING)
-        .limit(300)
+        .limit(100)
         .get()
         .addOnCompleteListener() { task ->
             if (task.isSuccessful) {
                 for (document in task.result) {
-                    if (document.data["displayName"] != null && document.data["reported"] != true)
+                    if (document.data["displayName"] != null && document.data["reported"] != true) {
+                        val thumbnail = if (document.data["type"].toString() != "video") "" else "https://firebasestorage.googleapis.com/v0/b/agrohikulik.appspot.com/o/images%2Fposts%2F" + "videos/${document.data["userId"]}/thumbnails/${document.data["video"]}.png"
                         posts.add(
                             Post(
                                 document.id,
@@ -145,9 +149,13 @@ fun Feed() {
                                 document.data["userId"].toString(),
                                 document.data["views"].toString(),
                                 document.data["likes"].toString(),
+                                document.data["photoUrl"].toString(),
+                                document.data["video"].toString(),
+                                thumbnail,
                             )
                         )
-//                    Log.d(ContentValues.TAG, document.id + " => " + document.data)
+                    }
+                    Log.d(ContentValues.TAG, document.id + " => " + document.data)
                 }
             } else {
                 Log.w(ContentValues.TAG, "Error getting documents.", task.exception)
@@ -209,17 +217,59 @@ fun Feed() {
                         Row(
                             modifier = Modifier
                                 .height(280.dp)
-                                .padding(5.dp)
-                                .fillMaxWidth()
-                                .clip(shape = RoundedCornerShape(5.dp))
-                                .background(PinkBg),
+                                .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Text(
-                                post.message,
-                                style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.W700)
-                            )
+                            if (post.thumbnail.isNotEmpty()) {
+                                Row(
+                                    modifier = Modifier
+                                        .height(280.dp)
+                                        .fillMaxWidth(),
+                                ) {
+                                    GlideImage(
+                                        model = post.thumbnail,
+                                        contentDescription = post.message,
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .fillMaxHeight(),
+                                    )
+                                }
+                            } else {
+                                if (post.photoUrl.isNotEmpty() && post.photoUrl != "null") {
+                                    Row(
+                                        modifier = Modifier
+                                            .height(280.dp)
+                                            .fillMaxWidth(),
+                                    ) {
+                                        GlideImage(
+                                            model = post.photoUrl,
+                                            contentDescription = post.message,
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .fillMaxHeight(),
+                                        )
+                                    }
+                                } else {
+                                    Row(
+                                        modifier = Modifier
+                                            .height(280.dp)
+                                            .fillMaxWidth()
+                                            .clip(shape = RoundedCornerShape(5.dp))
+                                            .background(PinkBg),
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        horizontalArrangement = Arrangement.Center
+                                    ) {
+                                        Text(
+                                            post.message,
+                                            style = TextStyle(
+                                                fontSize = 28.sp,
+                                                fontWeight = FontWeight.W700
+                                            )
+                                        )
+                                    }
+                                }
+                            }
                         }
                         Row(
                             verticalAlignment = Alignment.Bottom,
