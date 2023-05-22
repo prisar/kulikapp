@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
@@ -149,11 +150,11 @@ class EmailPasswordActivity : ComponentActivity() {
             modifier = Modifier.background(LightBlueBg)
         ) {
 
-            Column(modifier = Modifier.background(Color.White).height(500.dp)
+            Column(modifier = Modifier.background(Color.White).height(300.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .height(100.dp)
                         .padding(5.dp)
@@ -169,7 +170,7 @@ class EmailPasswordActivity : ComponentActivity() {
 
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .height(100.dp)
                         .padding(5.dp)
@@ -189,7 +190,8 @@ class EmailPasswordActivity : ComponentActivity() {
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .height(100.dp)
-                        .padding(10.dp)
+                        .padding(20.dp)
+                        .clip(shape = RoundedCornerShape(30.dp))
                         .background(Color.LightGray)
                         .fillMaxWidth()
                         .clickable() {
