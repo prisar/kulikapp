@@ -5,10 +5,12 @@
     <string name="main">Home</string>
     <string name="feed">Feed</string>
     <string name="post">Post</string>
+    <string name="explore">Explore</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_feed">FeedActivity</string>
     <string name="title_activity_user">UserActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
     <string name="title_activity_add_post">AddPostActivity</string>
+    <string name="title_activity_explore">ExploreActivity</string>
 </resources>
