@@ -88,6 +88,7 @@ fun Profile( onNavigateToHome: () -> Unit) {
     var currentUser = auth.getCurrentUser()
     if (currentUser == null) {
         Text("Please login")
+        context.startActivity(Intent(context, GoogleSignInActivity::class.java))
     } else {
 //        db.collection("users")
 //            .document(currentUser.uid)

@@ -2,6 +2,7 @@ package com.agrohi.kulik
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -9,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -38,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
+import com.agrohi.kulik.ui.theme.LightGreen
+import com.agrohi.kulik.ui.theme.Purple500
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -84,11 +89,16 @@ class AddPostActivity : ComponentActivity() {
 fun AddPostScreen() {
     var message by remember { mutableStateOf("") }
     val db = FirebaseFirestore.getInstance()
+    val context = LocalContext.current
+    auth = Firebase.auth
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.background(LightBlueBg)
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .background(LightBlueBg)
     ) {
 
         Card(
@@ -98,21 +108,21 @@ fun AddPostScreen() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 16.dp)
-                .height(250.dp)
+                .height(500.dp)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.background(LightBlueBg)
+                modifier = Modifier.background(Color.White)
             ) {
                 Row() {
-                    Text("Add post")
+                    Text("Post", style = TextStyle(fontSize = 32.sp, fontWeight = FontWeight.Bold))
                 }
 
                 Row() {
                     OutlinedTextField(
                         modifier = Modifier
-                            .fillMaxWidth().height(120.dp)
+                            .fillMaxWidth().height(320.dp)
                             .padding(start = 15.dp, top = 10.dp, end = 15.dp)
                             .background(Color.White, RoundedCornerShape(5.dp)),
                         shape = RoundedCornerShape(5.dp),
@@ -128,12 +138,12 @@ fun AddPostScreen() {
                     verticalAlignment = Alignment.Bottom,
                     modifier = Modifier
                         .padding(10.dp)
-                        .height(70.dp)
+                        .height(60.dp)
                         .fillMaxWidth()
                         .clip(shape = RoundedCornerShape(30.dp))
-                        .background(Color.White)
+                        .background(LightGreen)
                         .clickable() {
-                            val currentUser = auth.getCurrentUser()
+                            val currentUser = auth!!.getCurrentUser()
                             val createdAt = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ").format( Date())
                             if (currentUser != null) {
                                 val data = hashMapOf(
@@ -152,18 +162,30 @@ fun AddPostScreen() {
                                     .collection("posts")
                                     .add(data)
                                     .addOnSuccessListener { documentReference ->
+                                        Toast.makeText(
+                                            context,
+                                            "Post created",
+                                            Toast.LENGTH_SHORT,
+                                        ).show()
                                         Log.d(AddPostActivity.TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
                                     }
                                     .addOnFailureListener { e ->
                                         Log.w(AddPostActivity.TAG, "Error adding document", e)
                                     }
                             }
+                            else {
+                                Toast.makeText(
+                                    context,
+                                    "Please sign in",
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
                         }
                 ) {
                     Text("Create",
                         style = TextStyle(
-                            fontSize = 32.sp,
-                            fontWeight = FontWeight.Bold,
+                            fontSize = 28.sp,
+                            fontWeight = FontWeight.Medium,
                             textAlign = TextAlign.Center,
                         ),
                         modifier = Modifier
