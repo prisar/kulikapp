@@ -5,6 +5,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -19,10 +20,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -34,15 +39,23 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
+import com.agrohi.kulik.ui.theme.LightGreen
+import com.agrohi.kulik.ui.theme.PinkBg
+import com.agrohi.kulik.ui.theme.Red249
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.google.firebase.firestore.FirebaseFirestore
@@ -84,9 +97,41 @@ fun Feed() {
     val posts = remember { mutableStateListOf<Post>() }
     val context = LocalContext.current
 
+    val openDialog = remember { mutableStateOf(false) }
+
+    if (openDialog.value) {
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            title = {
+                Text(text = "You are reporting this post")
+            },
+            text = {
+
+            },
+            buttons = {
+                Row(
+                    modifier = Modifier.padding(all = 8.dp),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .width(100.dp)
+                            .background(Red249)
+                            .clickable() { openDialog.value = false }
+                    ) {
+                        Text("Submit")
+                    }
+                }
+            }
+        )
+    }
+
     db.collection("posts")
         .orderBy("createdAt", Query.Direction.DESCENDING)
-        .limit(30)
+        .limit(300)
         .get()
         .addOnCompleteListener() { task ->
             if (task.isSuccessful) {
@@ -121,25 +166,26 @@ fun Feed() {
             itemsIndexed(posts) { index, post ->
 
                 Card(
-                    shape = RoundedCornerShape(10.dp),
-                    elevation = 1.dp,
+                    shape = RoundedCornerShape(5.dp),
+//                    elevation = 1.dp,
                     backgroundColor = Color.White,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(all = 16.dp)
-                        .height(250.dp)
+                        .padding(all = 5.dp)
+                        .height(400.dp)
                 ) {
                     Column(
-                        modifier = Modifier.padding(all = 10.dp),
-                        verticalArrangement = Arrangement.Top,
+                        modifier = Modifier.padding(all = 1.dp),
+                        verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Row(
                             horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.Top,
+                            verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(70.dp),
+                                .padding(5.dp)
+                                .height(65.dp),
                         ) {
                             GlideImage(
                                 model = post.avatar,
@@ -164,23 +210,27 @@ fun Feed() {
                         }
                         Row(
                             modifier = Modifier
-                                .height(120.dp)
-                                .fillMaxWidth(),
+                                .height(280.dp)
+                                .padding(5.dp)
+                                .fillMaxWidth()
+                                .clip(shape = RoundedCornerShape(5.dp))
+                                .background(PinkBg),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Text(post.message)
+                            Text(post.message, style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.W700))
                         }
                         Row(
                             verticalAlignment = Alignment.Bottom,
                             horizontalArrangement = Arrangement.Start,
                             modifier = Modifier
-                                .height(30.dp)
+                                .height(55.dp)
+                                .padding(5.dp)
                                 .fillMaxWidth()
                         ) {
                             Icon(imageVector = Icons.Filled.ThumbUp,
                                 contentDescription = post.likes,
-                                tint = Color.Blue,
+                                tint = Red249,
                                 modifier = Modifier
                                     .size(28.dp)
                                     .clickable() {
@@ -210,25 +260,30 @@ fun Feed() {
                                             }
                                     }
                             )
-                            Text(post.likes)
+                            Text(post.likes, fontWeight = FontWeight.W300, modifier = Modifier
+                                .padding(5.dp))
                             Icon(
                                 imageVector = Icons.Filled.Person,
                                 contentDescription = post.likes,
-                                tint = Color.Blue,
+                                tint = Color.Black,
                                 modifier = Modifier.size(28.dp)
                             )
-                            Text(post.views)
+                            Text(post.views, fontWeight = FontWeight.W300, modifier = Modifier
+                                .padding(5.dp))
                             Icon(imageVector = Icons.Filled.Warning,
                                 contentDescription = post.likes,
-                                tint = Color.Blue,
+                                tint = Color.LightGray,
                                 modifier = Modifier
                                     .size(28.dp)
                                     .clickable() {
+                                        openDialog.value = true
+
                                         db
                                             .collection("posts")
                                             .document(post.id)
                                             .set(hashMapOf("reported" to true), SetOptions.merge())
                                             .addOnSuccessListener {
+//                                                Toast.makeText(context, "Post is reported successfully", Toast.LENGTH_SHORT).show()
                                                 Log.d(
                                                     TAG,
                                                     "DocumentSnapshot " + post.id + " successfully written!"
@@ -245,7 +300,7 @@ fun Feed() {
                                         posts.drop(index)
                                     }
                             )
-                            Text("Report")
+//                            Text("Report")
                         }
                     }
                 }
