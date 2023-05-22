@@ -5,13 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,7 +19,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -57,6 +54,10 @@ class ProfileActivity : ComponentActivity() {
     }
 }
 
+fun signOut() {
+    Firebase.auth.signOut()
+}
+
 @Composable
 fun Profile() {
     val db = FirebaseFirestore.getInstance()
@@ -66,28 +67,35 @@ fun Profile() {
     auth = Firebase.auth
     var currentUser = auth.getCurrentUser()
     if (currentUser == null) {
-        context.startActivity(Intent(context, EmailPasswordActivity::class.java))
+        context.startActivity(Intent(context, GoogleSignInActivity::class.java))
+    } else {
+        db.collection("users")
+            .document(currentUser.uid)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    var document = task.result
+                    Log.d(TAG, document.id + " => " + document.data)
+                    userData = document.data.toString()
+                } else {
+                    Log.w(TAG, "Error getting documents.", task.exception)
+                }
+            }
     }
-//    db.collection("users")
-//        .document("VTlIMNIsGRNiDLMb5lGKZ1Wgg5G3")
-//        .get()
-//        .addOnCompleteListener { task ->
-//            if (task.isSuccessful) {
-//                var document = task.result
-//                Log.d(TAG, document.id + " => " + document.data)
-//                userData = document.data.toString()
-//            } else {
-//                Log.w(TAG, "Error getting documents.", task.exception)
-//            }
-//        }
 
-    Text(text = userData)
+
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.background(LightBlueBg)
     ) {
-        Text("null")
+        Text(text = userData)
+
+        Row(modifier = Modifier.clickable() {
+            signOut()
+        }) {
+            Text("Sign out")
+        }
     }
 }
