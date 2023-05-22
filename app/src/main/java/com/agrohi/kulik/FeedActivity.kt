@@ -5,7 +5,6 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -21,8 +20,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
@@ -45,7 +42,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -53,7 +49,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
-import com.agrohi.kulik.ui.theme.LightGreen
 import com.agrohi.kulik.ui.theme.PinkBg
 import com.agrohi.kulik.ui.theme.Red249
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -87,7 +82,7 @@ data class Post(
     val type: String,
     val userId: String,
     val views: String,
-    val likes: String
+    val likes: String,
 )
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -112,13 +107,16 @@ fun Feed() {
             },
             buttons = {
                 Row(
-                    modifier = Modifier.padding(all = 8.dp),
+                    modifier = Modifier
+                        .padding(all = 8.dp)
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .width(100.dp)
+                            .clip(shape = RoundedCornerShape(15.dp))
                             .background(Red249)
                             .clickable() { openDialog.value = false }
                     ) {
@@ -218,7 +216,10 @@ fun Feed() {
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Text(post.message, style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.W700))
+                            Text(
+                                post.message,
+                                style = TextStyle(fontSize = 28.sp, fontWeight = FontWeight.W700)
+                            )
                         }
                         Row(
                             verticalAlignment = Alignment.Bottom,
@@ -260,16 +261,20 @@ fun Feed() {
                                             }
                                     }
                             )
-                            Text(post.likes, fontWeight = FontWeight.W300, modifier = Modifier
-                                .padding(5.dp))
+                            Text(
+                                post.likes, fontWeight = FontWeight.W300, modifier = Modifier
+                                    .padding(5.dp)
+                            )
                             Icon(
                                 imageVector = Icons.Filled.Person,
                                 contentDescription = post.likes,
                                 tint = Color.Black,
                                 modifier = Modifier.size(28.dp)
                             )
-                            Text(post.views, fontWeight = FontWeight.W300, modifier = Modifier
-                                .padding(5.dp))
+                            Text(
+                                post.views, fontWeight = FontWeight.W300, modifier = Modifier
+                                    .padding(5.dp)
+                            )
                             Icon(imageVector = Icons.Filled.Warning,
                                 contentDescription = post.likes,
                                 tint = Color.LightGray,
