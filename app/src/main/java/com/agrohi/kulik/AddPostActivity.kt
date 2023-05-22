@@ -46,8 +46,9 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+private lateinit var auth: FirebaseAuth
 class AddPostActivity : ComponentActivity() {
-    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
@@ -73,53 +74,59 @@ class AddPostActivity : ComponentActivity() {
         }
     }
 
-    @Composable
-    fun AddPostScreen() {
-        var message by remember { mutableStateOf("") }
-        val db = FirebaseFirestore.getInstance()
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.background(LightBlueBg)
+
+    companion object {
+        const val TAG = "AddPostActivity"
+    }
+}
+@Composable
+fun AddPostScreen() {
+    var message by remember { mutableStateOf("") }
+    val db = FirebaseFirestore.getInstance()
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.background(LightBlueBg)
+    ) {
+
+        Card(
+            shape = RoundedCornerShape(10.dp),
+            elevation = 1.dp,
+            backgroundColor = Color.White,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 16.dp)
+                .height(250.dp)
         ) {
-
-            Card(
-                shape = RoundedCornerShape(10.dp),
-                elevation = 1.dp,
-                backgroundColor = Color.White,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 16.dp)
-                    .height(250.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier.background(LightBlueBg)
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.background(LightBlueBg)
-                ) {
-                    Row() {
-                        Text("Add post")
-                    }
+                Row() {
+                    Text("Add post")
+                }
 
-                    Row() {
-                        OutlinedTextField(
-                            modifier = Modifier
-                                .fillMaxWidth().height(120.dp)
-                                .padding(start = 15.dp, top = 10.dp, end = 15.dp)
-                                .background(Color.White, RoundedCornerShape(5.dp)),
-                            shape = RoundedCornerShape(5.dp),
-                            value = message,
-                            onValueChange = { message = it },
-                            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                            maxLines = 3,
-                            label = { Text("Write the description of your post") },
-                        )
-                    }
-
-                    Row(horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.Bottom,
+                Row() {
+                    OutlinedTextField(
                         modifier = Modifier
+                            .fillMaxWidth().height(120.dp)
+                            .padding(start = 15.dp, top = 10.dp, end = 15.dp)
+                            .background(Color.White, RoundedCornerShape(5.dp)),
+                        shape = RoundedCornerShape(5.dp),
+                        value = message,
+                        onValueChange = { message = it },
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        maxLines = 3,
+                        label = { Text("Write the description of your post") },
+                    )
+                }
+
+                Row(horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.Bottom,
+                    modifier = Modifier
                         .padding(10.dp)
                         .height(70.dp)
                         .fillMaxWidth()
@@ -145,30 +152,25 @@ class AddPostActivity : ComponentActivity() {
                                     .collection("posts")
                                     .add(data)
                                     .addOnSuccessListener { documentReference ->
-                                        Log.d(TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                                        Log.d(AddPostActivity.TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
                                     }
                                     .addOnFailureListener { e ->
-                                        Log.w(TAG, "Error adding document", e)
+                                        Log.w(AddPostActivity.TAG, "Error adding document", e)
                                     }
                             }
                         }
-                    ) {
-                        Text("Create",
-                            style = TextStyle(
-                                fontSize = 32.sp,
-                                fontWeight = FontWeight.Bold,
-                                textAlign = TextAlign.Center,
-                            ),
-                            modifier = Modifier
-                                .padding(10.dp)
-                        )
-                    }
+                ) {
+                    Text("Create",
+                        style = TextStyle(
+                            fontSize = 32.sp,
+                            fontWeight = FontWeight.Bold,
+                            textAlign = TextAlign.Center,
+                        ),
+                        modifier = Modifier
+                            .padding(10.dp)
+                    )
                 }
             }
         }
-    }
-
-    companion object {
-        private const val TAG = "AddPostActivity"
     }
 }

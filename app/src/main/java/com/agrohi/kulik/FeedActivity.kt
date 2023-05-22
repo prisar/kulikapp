@@ -116,11 +116,6 @@ fun Feed() {
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.background(LightBlueBg)
     ) {
-        Row(modifier = Modifier.clickable() {
-            context.startActivity(Intent(context, AddPostActivity::class.java))
-        }) {
-            Text(text = "Add post")
-        }
 
         LazyColumn() {
             itemsIndexed(posts) { index, post ->
