@@ -161,7 +161,7 @@ fun UserDetails(userId: String) {
                                     ).show()
                                     Log.d(
                                         ContentValues.TAG,
-                                        "DocumentSnapshot " + userId + " successfully written!"
+                                        "DocumentSnapshot $userId successfully written!"
                                     )
                                 }
                                 .addOnFailureListener { e ->

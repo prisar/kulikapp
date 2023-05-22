@@ -159,7 +159,6 @@ class EmailPasswordActivity : ComponentActivity() {
                         .padding(5.dp)
                         .fillMaxWidth()
                 ) {
-                    Text("Email")
                     TextField(
                         value = email,
                         onValueChange = { email = it },
@@ -176,7 +175,6 @@ class EmailPasswordActivity : ComponentActivity() {
                         .padding(5.dp)
                         .fillMaxWidth()
                 ) {
-                    Text("Password")
                     TextField(
                         value = password,
                         onValueChange = { password = it },
