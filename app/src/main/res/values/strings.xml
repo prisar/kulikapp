@@ -8,5 +8,6 @@
     <string name="title_activity_feed">FeedActivity</string>
     <string name="title_activity_user">UserActivity</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_google">GoogleActivity</string>
+    <string name="title_activity_google_sign_in">GoogleSignInActivity</string>
+    <string name="title_activity_add_post">AddPostActivity</string>
 </resources>

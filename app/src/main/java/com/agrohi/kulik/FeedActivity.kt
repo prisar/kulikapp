@@ -116,6 +116,12 @@ fun Feed() {
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.background(LightBlueBg)
     ) {
+        Row(modifier = Modifier.clickable() {
+            context.startActivity(Intent(context, AddPostActivity::class.java))
+        }) {
+            Text(text = "Add post")
+        }
+
         LazyColumn() {
             itemsIndexed(posts) { index, post ->
 
@@ -187,7 +193,11 @@ fun Feed() {
                                             .collection("posts")
                                             .document(post.id)
                                             .set(
-                                                hashMapOf("likes" to post.likes.toString().toInt() + 1),
+                                                hashMapOf(
+                                                    "likes" to post.likes
+                                                        .toString()
+                                                        .toInt() + 1
+                                                ),
                                                 SetOptions.merge()
                                             )
                                             .addOnSuccessListener {
