@@ -54,10 +54,3 @@ fun AppNavigation() {
         AppNavGraph(modifier = Modifier.padding(paddingValues))
     }
 }
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    KulikTheme {
-        Home()
-    }
-}

@@ -117,15 +117,15 @@ class GoogleSignInActivity : ComponentActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Toast.makeText(
                         baseContext,
-                        "User is reported successfully.",
+                        "login success. press back",
                         Toast.LENGTH_SHORT,
                     ).show()
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     updateUI(user)
-                    val intent = Intent(baseContext, FeedActivity::class.java)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    baseContext.startActivity(intent)
+//                    val intent = Intent(baseContext, FeedActivity::class.java)
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                    baseContext.startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)

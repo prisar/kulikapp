@@ -102,6 +102,11 @@ class EmailPasswordActivity : ComponentActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
+                    Toast.makeText(
+                        baseContext,
+                        "login success. press back to continue",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
                     updateUI(user)
