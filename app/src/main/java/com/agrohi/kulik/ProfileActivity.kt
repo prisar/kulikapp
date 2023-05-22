@@ -83,6 +83,7 @@ fun signOut() {
 fun Profile() {
     val db = FirebaseFirestore.getInstance()
     var userData: String by remember { mutableStateOf("") }
+    var displayName: String by remember { mutableStateOf("") }
     var avatar: String by remember { mutableStateOf("") }
     var context = LocalContext.current
 
@@ -92,19 +93,21 @@ fun Profile() {
         context.startActivity(Intent(context, GoogleSignInActivity::class.java))
         Text("Please login")
     } else {
-        db.collection("users")
-            .document(currentUser.uid)
-            .get()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    var document = task.result
-                    Log.d(TAG, document.id + " => " + document.data)
-                    userData = document.data!!["avatar"].toString()
-                    userData = document.data!!["displayName"].toString()
-                } else {
-                    Log.w(TAG, "Error getting documents.", task.exception)
-                }
-            }
+//        db.collection("users")
+//            .document(currentUser.uid)
+//            .get()
+//            .addOnCompleteListener { task ->
+//                if (task.isSuccessful) {
+//                    var document = task.result
+//                    Log.d(TAG, document.id + " => " + document.data)
+//                    avatar = document.data!!["avatar"].toString()
+//                    userData = document.data!!["displayName"].toString()
+//                } else {
+//                    Log.w(TAG, "Error getting documents.", task.exception)
+//                }
+//            }
+        displayName = currentUser.displayName.toString()
+        avatar = currentUser.photoUrl.toString()
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -153,6 +156,7 @@ fun Profile() {
                     .background(Color.White)
                     .clickable() {
                         signOut()
+                        context.startActivity(Intent(context, FeedActivity::class.java))
                     }) {
                 Text("Sign out")
             }

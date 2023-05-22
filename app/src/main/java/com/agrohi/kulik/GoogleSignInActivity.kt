@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -114,10 +115,17 @@ class GoogleSignInActivity : ComponentActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
+                    Toast.makeText(
+                        baseContext,
+                        "User is reported successfully.",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     updateUI(user)
-                    baseContext.startActivity(Intent(baseContext, ProfileActivity::class.java))
+                    val intent = Intent(baseContext, FeedActivity::class.java)
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    baseContext.startActivity(intent)
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
