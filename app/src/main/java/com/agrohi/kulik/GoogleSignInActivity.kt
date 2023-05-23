@@ -168,6 +168,23 @@ class GoogleSignInActivity : ComponentActivity() {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
+                    .padding(10.dp)
+                    .height(75.dp)
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(30.dp))
+                    .background(Color.White)
+                    .clickable() {
+                        val intent = Intent(baseContext, PhoneAuthActivity::class.java)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        }
+                        baseContext.startActivity(intent)
+                    }) {
+                Text("Use Phone", textAlign = TextAlign.Center)
+            }
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
                 .padding(10.dp)
                 .height(75.dp)
                 .fillMaxWidth()
