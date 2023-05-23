@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.TextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -198,7 +199,8 @@ class PhoneAuthActivity : ComponentActivity() {
 
     @Composable
     fun PhoneAuthScreen() {
-        var phoneNumber by remember { mutableStateOf("") }
+        var phoneNumber by remember { mutableStateOf("+91 1234 567 890") } // e.g. +911234567890
+        var otp by remember { mutableStateOf("123456") } // e.g. 123456
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -211,11 +213,52 @@ class PhoneAuthActivity : ComponentActivity() {
                     .height(75.dp)
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(30.dp))
+                    .background(Color.White)) {
+                TextField(
+                    value = phoneNumber,
+                    onValueChange = { phoneNumber = it },
+                    label = { Text("Enter phone number") },
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .height(75.dp)
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(30.dp))
                     .background(Color.White)
                     .clickable() {
                         startPhoneNumberVerification(phoneNumber)
                     }) {
                 Text("Get OTP", textAlign = TextAlign.Center)
+            }
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .height(75.dp)
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(30.dp))
+                    .background(Color.White)) {
+                TextField(
+                    value = otp,
+                    onValueChange = { otp = it },
+                    label = { Text("Enter otp") },
+                )
+            }
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .padding(10.dp)
+                    .height(75.dp)
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(30.dp))
+                    .background(Color.White)
+                    .clickable() {
+                        verifyPhoneNumberWithCode(storedVerificationId, otp)
+                    }) {
+                Text("Verify Otp")
             }
         }
     }
