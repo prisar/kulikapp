@@ -10,3 +10,7 @@ this is the rebuilt android app with kotlin and jetpack compose for [migrating f
 the pervious version was causing difficulty in meeting the requirements of playstore. almost every year google asked to upgrade 
 sdk version. while react native is good for javascript developers it also creates burrden of maintaining playstore reqirements. 
 the react native uses relatively earlier versions of sdk. that's why i have decied to migrate to android itself.  
+
+information structure
+![kulik-infro-arch 001](https://github.com/prisar/kulikapp/assets/7943405/88a42146-05e9-4db8-88fc-2b2d2317a4d7)
+![kulik-infro-arch 002](https://github.com/prisar/kulikapp/assets/7943405/b20f0f8f-c22b-49a8-895f-976bdf868ed9)
