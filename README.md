@@ -1,3 +1,6 @@
+
+[<img src="https://cdn.rawgit.com/steverichey/google-play-badge-svg/master/img/en_get.svg" width="50%">](https://play.google.com/store/apps/details?id=com.agrohi.kulik)
+
 # kulikapp
 this app is a part of hobby for creating apps which will help people leaving in north bengal. there are not many apps made for that 
 region. so, i have been in a mission of developing open source apps. as a part of that mission, i have created this app to have a 
