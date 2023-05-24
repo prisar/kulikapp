@@ -177,8 +177,8 @@ fun Feed() {
                     backgroundColor = Color.White,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(all = 5.dp)
-                        .height(400.dp)
+//                        .padding(bottom = 3.dp)
+                        .height(450.dp)
                 ) {
                     Column(
                         modifier = Modifier.padding(all = 1.dp),
@@ -191,13 +191,13 @@ fun Feed() {
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(5.dp)
-                                .height(65.dp),
+                                .height(40.dp),
                         ) {
                             GlideImage(
                                 model = post.avatar,
                                 contentDescription = post.message,
                                 modifier = Modifier
-                                    .size(64.dp)
+                                    .size(32.dp)
                                     .clip(CircleShape)
                                     .border(2.dp, Color.Gray, CircleShape)
                                     .padding(1.dp)
@@ -216,7 +216,7 @@ fun Feed() {
                         }
                         Row(
                             modifier = Modifier
-                                .height(280.dp)
+                                .height(350.dp)
                                 .fillMaxWidth(),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
@@ -224,7 +224,7 @@ fun Feed() {
                             if (post.thumbnail.isNotEmpty()) {
                                 Row(
                                     modifier = Modifier
-                                        .height(280.dp)
+                                        .height(350.dp)
                                         .fillMaxWidth(),
                                 ) {
                                     GlideImage(
@@ -239,7 +239,7 @@ fun Feed() {
                                 if (post.photoUrl.isNotEmpty() && post.photoUrl != "null") {
                                     Row(
                                         modifier = Modifier
-                                            .height(280.dp)
+                                            .height(350.dp)
                                             .fillMaxWidth(),
                                     ) {
                                         GlideImage(
@@ -253,7 +253,7 @@ fun Feed() {
                                 } else {
                                     Row(
                                         modifier = Modifier
-                                            .height(280.dp)
+                                            .height(350.dp)
                                             .fillMaxWidth()
                                             .clip(shape = RoundedCornerShape(5.dp))
                                             .background(PinkBg),
