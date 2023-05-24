@@ -121,12 +121,12 @@ fun UserDetails(userId: String) {
                 modifier = Modifier
                     .height(50.dp)
                     .fillMaxWidth()) {
-                Text("Press the icon to report the user", modifier = Modifier.padding(5.dp))
+                Text("Press the icon to report the user", modifier = Modifier.padding(15.dp))
 
                 Icon(Icons.Filled.Warning, contentDescription = null,
                     tint = Color.LightGray,
                     modifier = Modifier
-                        .size(72.dp)
+                        .size(64.dp)
                         .padding(10.dp)
                         .clickable() {
                             db
@@ -181,17 +181,19 @@ fun UserDetails(userId: String) {
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(10.dp)
             ) {
-                Text(displayName, style = TextStyle(fontWeight = FontWeight.W700, fontSize = 40.sp), modifier = Modifier.padding(10.dp))
+                Text(displayName, style = TextStyle(fontWeight = FontWeight.W700, fontSize = 32.sp), modifier = Modifier.padding(10.dp))
             }
 
             if (reported)  {
                 Row(verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.Start,
+                    horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .height(30.dp)
-                        .padding(10.dp)
+                        .padding(5.dp)
                         .fillMaxWidth()) {
-                    Text(text = "The user has already been reported", style = TextStyle(color = Color.Red))
+                    Text(text = "The user has already been reported",
+                        style = TextStyle(color = Color.Red),
+                    )
                 }
             }
 
