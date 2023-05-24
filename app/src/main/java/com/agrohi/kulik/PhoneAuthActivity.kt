@@ -202,8 +202,8 @@ class PhoneAuthActivity : ComponentActivity() {
 
     @Composable
     fun PhoneAuthScreen() {
-        var phoneNumber by remember { mutableStateOf("+91 1234 567 890") } // e.g. +911234567890
-        var otp by remember { mutableStateOf("123456") } // e.g. 123456
+        var phoneNumber by remember { mutableStateOf("+91") } // e.g. +911234567890
+        var otp by remember { mutableStateOf("") } // e.g. 123456
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
@@ -262,7 +262,7 @@ class PhoneAuthActivity : ComponentActivity() {
                         if(storedVerificationId != null)
                             verifyPhoneNumberWithCode(storedVerificationId, otp)
                     }) {
-                Text("Verify Otp")
+                Text("Verify")
             }
         }
     }
