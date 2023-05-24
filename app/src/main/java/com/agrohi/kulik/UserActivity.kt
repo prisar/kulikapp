@@ -38,7 +38,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -101,7 +103,7 @@ fun UserDetails(userId: String) {
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.Center,
         modifier = Modifier.background(LightBlueBg)
     ) {
 
@@ -112,39 +114,17 @@ fun UserDetails(userId: String) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 16.dp)
-                .height(250.dp)
+                .height(350.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .height(100.dp)
-                    .padding(10.dp)
-                    .fillMaxWidth()
-            ) {
-                GlideImage(
-                    model = avatar,
-                    contentDescription = displayName,
-                    modifier = Modifier
-                        .size(64.dp)
-                        .clip(CircleShape)
-                        .border(2.dp, Color.Gray, CircleShape)
-                        .padding(1.dp)
-                        .clickable(onClick = {
-
-                        })
-                        .fillMaxHeight(),
-                )
-
-                Text(displayName, modifier = Modifier.padding(32.dp))
-            }
-
-            Row(verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start,
+            Row(verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.End,
                 modifier = Modifier
                     .height(50.dp)
                     .fillMaxWidth()) {
-                Icon(Icons.Filled.Warning, contentDescription = null, tint = Color.Blue,
+                Text("Press the icon to report the user", modifier = Modifier.padding(5.dp))
+
+                Icon(Icons.Filled.Warning, contentDescription = null,
+                    tint = Color.LightGray,
                     modifier = Modifier
                         .size(72.dp)
                         .padding(10.dp)
@@ -172,7 +152,36 @@ fun UserDetails(userId: String) {
                                     )
                                 }
                         })
-                Text("Press the icon to report the user", modifier = Modifier.padding(15.dp))
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .height(100.dp)
+                    .padding(10.dp)
+                    .fillMaxWidth()
+            ) {
+                GlideImage(
+                    model = avatar,
+                    contentDescription = displayName,
+                    modifier = Modifier
+                        .size(150.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, Color.Gray, CircleShape)
+                        .padding(1.dp)
+                        .clickable(onClick = {
+
+                        })
+                        .fillMaxHeight(),
+                )
+            }
+
+            Row(verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.padding(10.dp)
+            ) {
+                Text(displayName, style = TextStyle(fontWeight = FontWeight.W700, fontSize = 40.sp), modifier = Modifier.padding(10.dp))
             }
 
             if (reported)  {
