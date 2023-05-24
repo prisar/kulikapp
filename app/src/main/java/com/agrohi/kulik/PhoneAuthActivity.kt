@@ -3,6 +3,7 @@ package com.agrohi.kulik
 import android.app.Activity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
@@ -149,6 +150,7 @@ class PhoneAuthActivity : ComponentActivity() {
         // [START verify_with_code]
         val credential = PhoneAuthProvider.getCredential(verificationId!!, code)
         // [END verify_with_code]
+        signInWithPhoneAuthCredential(credential); // added since callback is getting called
     }
 
     // [START resend_verification]
@@ -178,6 +180,7 @@ class PhoneAuthActivity : ComponentActivity() {
                     Log.d(TAG, "signInWithCredential:success")
 
                     val user = task.result?.user
+                    Toast.makeText(baseContext, "Sign in success", Toast.LENGTH_SHORT)
                 } else {
                     // Sign in failed, display a message and update the UI
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -256,7 +259,8 @@ class PhoneAuthActivity : ComponentActivity() {
                     .clip(shape = RoundedCornerShape(30.dp))
                     .background(Color.White)
                     .clickable() {
-                        verifyPhoneNumberWithCode(storedVerificationId, otp)
+                        if(storedVerificationId != null)
+                            verifyPhoneNumberWithCode(storedVerificationId, otp)
                     }) {
                 Text("Verify Otp")
             }

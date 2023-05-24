@@ -155,7 +155,7 @@ fun Feed() {
                             )
                         )
                     }
-                    Log.d(ContentValues.TAG, document.id + " => " + document.data)
+//                    Log.d(ContentValues.TAG, document.id + " => " + document.data)
                 }
             } else {
                 Log.w(ContentValues.TAG, "Error getting documents.", task.exception)
