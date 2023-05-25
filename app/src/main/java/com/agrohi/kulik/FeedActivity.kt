@@ -138,7 +138,8 @@ fun Feed() {
             if (task.isSuccessful) {
                 for (document in task.result) {
                     if (document.data["displayName"] != null && document.data["reported"] != true) {
-                        val thumbnail = if (document.data["type"].toString() != "video") "" else "https://firebasestorage.googleapis.com/v0/b/agrohikulik.appspot.com/o/images%2Fposts%2F" + "videos/${document.data["userId"]}/thumbnails/${document.data["video"]}.png"
+                        val thumbnail =
+                            if (document.data["type"].toString() != "video") "" else "https://firebasestorage.googleapis.com/v0/b/agrohikulik.appspot.com/o/images%2Fposts%2F" + "videos/${document.data["userId"]}/thumbnails/${document.data["video"]}.png"
                         posts.add(
                             Post(
                                 document.id,

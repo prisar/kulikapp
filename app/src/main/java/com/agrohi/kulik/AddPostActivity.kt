@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Card
 import androidx.compose.material.OutlinedTextField
-import androidx.compose.material.TextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -42,15 +41,13 @@ import androidx.compose.ui.unit.sp
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.agrohi.kulik.ui.theme.LightGreen
-import com.agrohi.kulik.ui.theme.Purple500
-import com.agrohi.kulik.ui.theme.lightRedishWhite
+import com.agrohi.kulik.ui.theme.lightReddishWhite
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
 private lateinit var auth: FirebaseAuth
 class AddPostActivity : ComponentActivity() {
@@ -125,7 +122,7 @@ fun AddPostScreen() {
                         modifier = Modifier
                             .fillMaxWidth().height(320.dp)
                             .padding(start = 15.dp, top = 10.dp, end = 15.dp)
-                            .background(lightRedishWhite, RoundedCornerShape(5.dp)),
+                            .background(lightReddishWhite, RoundedCornerShape(5.dp)),
                         shape = RoundedCornerShape(5.dp),
                         value = message,
                         onValueChange = { message = it },
