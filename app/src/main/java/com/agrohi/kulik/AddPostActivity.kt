@@ -43,6 +43,7 @@ import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.agrohi.kulik.ui.theme.LightGreen
 import com.agrohi.kulik.ui.theme.Purple500
+import com.agrohi.kulik.ui.theme.lightRedishWhite
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -124,7 +125,7 @@ fun AddPostScreen() {
                         modifier = Modifier
                             .fillMaxWidth().height(320.dp)
                             .padding(start = 15.dp, top = 10.dp, end = 15.dp)
-                            .background(Color.White, RoundedCornerShape(5.dp)),
+                            .background(lightRedishWhite, RoundedCornerShape(5.dp)),
                         shape = RoundedCornerShape(5.dp),
                         value = message,
                         onValueChange = { message = it },
