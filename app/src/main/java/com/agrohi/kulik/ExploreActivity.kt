@@ -3,13 +3,16 @@ package com.agrohi.kulik
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -20,6 +23,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -59,7 +64,7 @@ fun Explore() {
                 .padding(10.dp)
                 .fillMaxWidth()
         ) {
-            Text("Explore", style = TextStyle(fontSize = 32.sp))
+            Text("Explore", style = TextStyle(fontSize = 32.sp), fontWeight = FontWeight.W700)
         }
         Row(
             modifier = Modifier
@@ -74,7 +79,28 @@ fun Explore() {
                     .width(160.dp)
                     .padding(start = 10.dp, end = 10.dp)
             ) {
-                Text("Community Posts", fontSize = 16.sp, fontWeight = FontWeight.W600)
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .height(180.dp)
+                        .width(160.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.height(120.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.community),
+                            contentDescription = stringResource(id = R.string.community_posts),
+                            modifier = Modifier.size(90.dp)
+                        )
+                    }
+                    Row() {
+                        Text("Community Posts", fontSize = 16.sp, fontWeight = FontWeight.W600)
+                    }
+                }
             }
 
             Card(
@@ -84,7 +110,32 @@ fun Explore() {
                     .height(180.dp)
                     .width(160.dp)
             ) {
-                Text("Updates", fontSize = 16.sp, fontWeight = FontWeight.W600)
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .height(180.dp)
+                        .width(160.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                        modifier = Modifier.height(120.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.write),
+                            contentDescription = null,
+                            modifier = Modifier.size(90.dp)
+                        )
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center,
+                    ) {
+                        Text("Updates", fontSize = 16.sp, fontWeight = FontWeight.W600)
+                    }
+                }
+
             }
         }
         Row(
@@ -104,5 +155,4 @@ fun Explore() {
             }
         }
     }
-
 }

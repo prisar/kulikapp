@@ -63,7 +63,7 @@ fun Home() {
         val context = LocalContext.current
 
         Image(
-            painter = painterResource(id = R.drawable.kulik),
+            painter = painterResource(id = R.drawable.banner),
             contentDescription = "train",
             modifier = Modifier
                 .fillMaxWidth()

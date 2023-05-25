@@ -19,4 +19,5 @@
     <!-- [START fcm_default_icon_string] -->
     <string name="default_notification_channel_name" translatable="true">Default Notifications</string>
     <!-- [END fcm_default_icon_string] -->
+    <string name="community_posts">Community Posts</string>
 </resources>
