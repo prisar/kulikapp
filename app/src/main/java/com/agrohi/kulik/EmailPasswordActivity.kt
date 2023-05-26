@@ -42,11 +42,17 @@ import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Date
 
 private lateinit var auth: FirebaseAuth
 
 class EmailPasswordActivity : ComponentActivity() {
+    private val db = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
@@ -110,6 +116,17 @@ class EmailPasswordActivity : ComponentActivity() {
                     Log.d(TAG, "signInWithEmail:success")
                     val user = auth.currentUser
                     updateUI(user)
+                    db.collection("users").document(user!!.uid).set(
+                        hashMapOf(
+                            "userId" to user.uid,
+                            "displayName" to user.displayName,
+                            "avatar" to user.photoUrl,
+                            "email" to user.email,
+                            "lastSignInTime" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ").format( Date()),
+                            "emailVerified" to user.isEmailVerified,
+                        ),
+                        SetOptions.merge()
+                    )
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithEmail:failure", task.exception)

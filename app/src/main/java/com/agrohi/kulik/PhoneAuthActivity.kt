@@ -47,6 +47,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.concurrent.TimeUnit
 
 class PhoneAuthActivity : ComponentActivity() {
@@ -188,7 +190,9 @@ class PhoneAuthActivity : ComponentActivity() {
                         hashMapOf(
                             "userId" to curUser.uid,
                             "displayName" to curUser.displayName,
-                            "avatar" to curUser.photoUrl
+                            "avatar" to curUser.photoUrl,
+                            "lastSignInTime" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ").format( Date()),
+                            "phoneVerified" to true,
                         ),
                         SetOptions.merge()
                     )
