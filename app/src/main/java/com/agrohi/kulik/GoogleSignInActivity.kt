@@ -8,7 +8,6 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,7 +37,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
+
 
 class GoogleSignInActivity : ComponentActivity() {
 
@@ -47,6 +49,7 @@ class GoogleSignInActivity : ComponentActivity() {
     // [END declare_auth]
 
     private lateinit var googleSignInClient: GoogleSignInClient
+    val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,6 +126,18 @@ class GoogleSignInActivity : ComponentActivity() {
                     Log.d(TAG, "signInWithCredential:success")
                     val user = auth.currentUser
                     updateUI(user)
+                    // user created on same day
+                    if (System.currentTimeMillis() - user!!.metadata!!.creationTimestamp < 24* 60 * 60 * 1000) {
+                        // new user creation
+                    }
+                    db.collection("users").document(user.uid).set(
+                        hashMapOf(
+                            "userId" to user.uid,
+                            "displayName" to user.displayName,
+                            "avatar" to user.photoUrl,
+                        ),
+                        SetOptions.merge()
+                    )
 //                    val intent = Intent(baseContext, FeedActivity::class.java)
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 //                    baseContext.startActivity(intent)
@@ -155,14 +170,14 @@ class GoogleSignInActivity : ComponentActivity() {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                .padding(10.dp)
-                .height(75.dp)
-                .fillMaxWidth()
-                .clip(shape = RoundedCornerShape(30.dp))
-                .background(Color.White)
-                .clickable() {
-                signIn()
-            }) {
+                    .padding(10.dp)
+                    .height(75.dp)
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(30.dp))
+                    .background(Color.White)
+                    .clickable() {
+                        signIn()
+                    }) {
                 Text("Google", textAlign = TextAlign.Center)
             }
             Row(verticalAlignment = Alignment.CenterVertically,
@@ -185,18 +200,18 @@ class GoogleSignInActivity : ComponentActivity() {
             Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                .padding(10.dp)
-                .height(75.dp)
-                .fillMaxWidth()
-                .clip(shape = RoundedCornerShape(30.dp))
-                .background(Color.White)
-                .clickable() {
-                    val intent = Intent(baseContext, EmailPasswordActivity::class.java)
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    }
-                    baseContext.startActivity(intent)
-            }) {
+                    .padding(10.dp)
+                    .height(75.dp)
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(30.dp))
+                    .background(Color.White)
+                    .clickable() {
+                        val intent = Intent(baseContext, EmailPasswordActivity::class.java)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        }
+                        baseContext.startActivity(intent)
+                    }) {
                 Text("Sign in with email", textAlign = TextAlign.Center)
             }
         }

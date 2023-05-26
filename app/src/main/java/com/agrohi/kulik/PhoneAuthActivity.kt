@@ -44,6 +44,8 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.ktx.Firebase
 import java.util.concurrent.TimeUnit
 
@@ -56,6 +58,7 @@ class PhoneAuthActivity : ComponentActivity() {
     private var storedVerificationId: String? = ""
     private lateinit var resendToken: PhoneAuthProvider.ForceResendingToken
     private lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -180,6 +183,15 @@ class PhoneAuthActivity : ComponentActivity() {
                     Log.d(TAG, "signInWithCredential:success")
 
                     val user = task.result?.user
+                    val curUser = auth.currentUser
+                    db.collection("users").document(curUser!!.uid).set(
+                        hashMapOf(
+                            "userId" to curUser.uid,
+                            "displayName" to curUser.displayName,
+                            "avatar" to curUser.photoUrl
+                        ),
+                        SetOptions.merge()
+                    )
                     Toast.makeText(baseContext, "Sign in success", Toast.LENGTH_SHORT)
                 } else {
                     // Sign in failed, display a message and update the UI
