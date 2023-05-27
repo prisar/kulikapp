@@ -2,7 +2,6 @@ package com.agrohi.kulik
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,7 +12,6 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
@@ -27,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -39,6 +38,7 @@ sealed class Screen(val route: String, val icon: ImageVector, @StringRes val res
     object Explore : Screen("explore", icon = Icons.Filled.Search, R.string.explore)
     object AddPost : Screen("addpost", icon = Icons.Filled.AddCircle, R.string.post)
     object Feed : Screen("feed", icon = Icons.Filled.Favorite, R.string.feed)
+    object GoogleSignIn : Screen("googlesignin", icon = Icons.Filled.Favorite, R.string.feed)
 }
 
 @Composable
@@ -52,6 +52,7 @@ fun AppNavGraph(
         Screen.AddPost,
         Screen.Feed,
         Screen.Profile,
+        Screen.GoogleSignIn,
     )
 
     val navController = rememberNavController()
@@ -68,14 +69,16 @@ fun AppNavGraph(
                 items.forEach { screen ->
                     BottomNavigationItem(
                         icon = {
-                            if (screen.route == "addpost") {
-                                Icon(
-                                    screen.icon,
-                                    contentDescription = "add post",
-                                    modifier = Modifier.size(50.dp)
-                                )
-                            } else
-                                Icon(screen.icon, contentDescription = null)
+                            if (!listOf("googlesignin").contains(screen.route)) {
+                                if (screen.route == "addpost") {
+                                    Icon(
+                                        screen.icon,
+                                        contentDescription = "add post",
+                                        modifier = Modifier.size(50.dp)
+                                    )
+                                } else
+                                    Icon(screen.icon, contentDescription = null)
+                            }
                         }, // add conditional icon size
                         label = {
                             if (screen.route == "addpost") {
@@ -114,7 +117,8 @@ fun AppNavGraph(
             composable(Screen.AddPost.route) { AddPostScreen() }
             composable(Screen.Profile.route) {
                 ProfileScreen(
-                    onNavigateToHome = { navController.navigate("home") },
+                    onNavigateToHome = { /* navController.navigate("home") */ },
+                    navController,
                     /*...*/
                 )
             }
@@ -126,10 +130,11 @@ fun AppNavGraph(
 @Composable
 fun ProfileScreen(
     onNavigateToHome: () -> Unit,
+    navController: NavHostController,
     /*...*/
 ) {
     /*...*/
-    Profile(onNavigateToHome)
+    Profile(onNavigateToHome, navController)
 }
 
 object Destinations {

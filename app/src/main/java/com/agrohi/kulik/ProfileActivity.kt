@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -55,7 +56,7 @@ class ProfileActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Profile( {})
+//                    Profile( {}, navController)
                 }
             }
         }
@@ -77,7 +78,7 @@ fun signOut() {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Profile( onNavigateToHome: () -> Unit) {
+fun Profile( onNavigateToHome: () -> Unit, navController: NavHostController) {
     val db = FirebaseFirestore.getInstance()
     var userData: String by remember { mutableStateOf("") }
     var displayName: String by remember { mutableStateOf("") }
@@ -158,6 +159,9 @@ fun Profile( onNavigateToHome: () -> Unit) {
                             "Logged out",
                             Toast.LENGTH_SHORT,
                         ).show()
+//                        navController.navigate("explore") {
+//                            popUpTo("profile")
+//                        }
                     }) {
                 Text("Sign out")
             }
