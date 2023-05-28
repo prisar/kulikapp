@@ -52,7 +52,7 @@ fun AppNavGraph(
         Screen.AddPost,
         Screen.Feed,
         Screen.Profile,
-        Screen.GoogleSignIn,
+//        Screen.GoogleSignIn,
     )
 
     val navController = rememberNavController()
@@ -117,7 +117,7 @@ fun AppNavGraph(
             composable(Screen.AddPost.route) { AddPostScreen() }
             composable(Screen.Profile.route) {
                 ProfileScreen(
-                    onNavigateToHome = { /* navController.navigate("home") */ },
+                    onNavigateToHome = { navController.navigate("home") },
                     navController,
                     /*...*/
                 )

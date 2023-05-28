@@ -159,6 +159,7 @@ fun Profile( onNavigateToHome: () -> Unit, navController: NavHostController) {
                             "Logged out",
                             Toast.LENGTH_SHORT,
                         ).show()
+//                        onNavigateToHome()
 //                        navController.navigate("explore") {
 //                            popUpTo("profile")
 //                        }
