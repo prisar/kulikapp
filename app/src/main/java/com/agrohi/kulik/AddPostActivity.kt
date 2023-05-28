@@ -62,7 +62,7 @@ class AddPostActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    AddPostScreen()
+//                    AddPostScreen()
                 }
             }
         }
@@ -84,7 +84,7 @@ class AddPostActivity : ComponentActivity() {
     }
 }
 @Composable
-fun AddPostScreen() {
+fun AddPostScreen(onNavigateToFeed: () -> Unit) {
     var message by remember { mutableStateOf("") }
     val db = FirebaseFirestore.getInstance()
     val context = LocalContext.current
@@ -166,6 +166,7 @@ fun AddPostScreen() {
                                             Toast.LENGTH_SHORT,
                                         ).show()
                                         Log.d(AddPostActivity.TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
+                                        onNavigateToFeed()
                                     }
                                     .addOnFailureListener { e ->
                                         Log.w(AddPostActivity.TAG, "Error adding document", e)

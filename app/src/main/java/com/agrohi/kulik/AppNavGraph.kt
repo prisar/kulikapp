@@ -114,7 +114,9 @@ fun AppNavGraph(
             composable(Screen.Home.route) { Home() }
             composable(Screen.Explore.route) { Explore() }
             composable(Screen.Feed.route) { Feed() }
-            composable(Screen.AddPost.route) { AddPostScreen() }
+            composable(Screen.AddPost.route) { AddPostScreen(
+                onNavigateToFeed = { navController.navigate("feed") },
+            ) }
             composable(Screen.Profile.route) {
                 ProfileScreen(
                     onNavigateToHome = { navController.navigate("home") },
