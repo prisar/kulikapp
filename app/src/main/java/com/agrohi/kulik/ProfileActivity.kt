@@ -1,10 +1,12 @@
 package com.agrohi.kulik
 
+import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -88,8 +90,29 @@ fun Profile( onNavigateToHome: () -> Unit, navController: NavHostController) {
     auth = Firebase.auth
     var currentUser = auth.getCurrentUser()
     if (currentUser == null) {
-        Text("Please login")
-        context.startActivity(Intent(context, GoogleSignInActivity::class.java))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxSize()
+                .fillMaxWidth()
+                .background(LightBlueBg)
+        ) {
+            Text("Please login")
+            Row(verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .height(70.dp)
+                    .fillMaxWidth()
+                    .padding(10.dp)
+                    .clip(shape = RoundedCornerShape(30.dp))
+                    .background(Color.White)
+                    .clickable() {
+                        context.startActivity(Intent(context, GoogleSignInActivity::class.java))
+                    }) {
+                Text("Login")
+            }
+        }
     } else {
 //        db.collection("users")
 //            .document(currentUser.uid)
@@ -154,12 +177,14 @@ fun Profile( onNavigateToHome: () -> Unit, navController: NavHostController) {
                     .background(Color.White)
                     .clickable() {
                         signOut()
-                        Toast.makeText(
-                            context,
-                            "Logged out",
-                            Toast.LENGTH_SHORT,
-                        ).show()
-//                        onNavigateToHome()
+                        Toast
+                            .makeText(
+                                context,
+                                "Logged out",
+                                Toast.LENGTH_SHORT,
+                            )
+                            .show()
+                        onNavigateToHome()
 //                        navController.navigate("explore") {
 //                            popUpTo("profile")
 //                        }

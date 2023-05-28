@@ -27,6 +27,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -52,6 +54,7 @@ class GoogleSignInActivity : ComponentActivity() {
 
     private lateinit var googleSignInClient: GoogleSignInClient
     private val db = FirebaseFirestore.getInstance()
+    private lateinit var nav: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -143,9 +146,11 @@ class GoogleSignInActivity : ComponentActivity() {
                         ),
                         SetOptions.merge()
                     )
-//                    val intent = Intent(baseContext, FeedActivity::class.java)
+//                    val intent = Intent(baseContext, HomeActivity::class.java)
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 //                    baseContext.startActivity(intent)
+
+                    finish()
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
@@ -167,6 +172,8 @@ class GoogleSignInActivity : ComponentActivity() {
 
     @Composable
     fun GoogleSignInScreen() {
+        nav = rememberNavController()
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
