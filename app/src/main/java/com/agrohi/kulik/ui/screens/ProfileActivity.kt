@@ -1,12 +1,10 @@
-package com.agrohi.kulik
+package com.agrohi.kulik.ui.screens
 
-import android.app.Instrumentation.ActivityResult
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable

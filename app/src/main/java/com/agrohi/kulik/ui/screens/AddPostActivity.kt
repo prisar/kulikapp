@@ -1,4 +1,4 @@
-package com.agrohi.kulik
+package com.agrohi.kulik.ui.screens
 
 import android.os.Bundle
 import android.util.Log

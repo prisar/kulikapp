@@ -1,4 +1,4 @@
-package com.agrohi.kulik
+package com.agrohi.kulik.ui.screens
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel

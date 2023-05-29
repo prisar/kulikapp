@@ -1,4 +1,4 @@
-package com.agrohi.kulik
+package com.agrohi.kulik.ui.screens
 
 import android.content.Intent
 import android.net.Uri
@@ -31,6 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.agrohi.kulik.R
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.agrohi.kulik.ui.theme.LightGreen

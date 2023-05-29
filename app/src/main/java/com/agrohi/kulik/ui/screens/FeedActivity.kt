@@ -1,4 +1,4 @@
-package com.agrohi.kulik
+package com.agrohi.kulik.ui.screens
 
 import android.content.ContentValues
 import android.content.ContentValues.TAG

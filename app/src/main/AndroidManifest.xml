@@ -12,47 +12,47 @@
         android:theme="@style/Theme.Kulik"
         tools:targetApi="31">
         <activity
-            android:name=".PhoneAuthActivity"
+            android:name=".ui.screens.PhoneAuthActivity"
             android:exported="false"
             android:label="@string/title_activity_phone_auth"
             android:theme="@style/Theme.Kulik" />
         <activity
-            android:name=".ExploreActivity"
+            android:name=".ui.screens.ExploreActivity"
             android:exported="false"
             android:label="@string/title_activity_explore"
             android:theme="@style/Theme.Kulik" />
         <activity
-            android:name=".AddPostActivity"
+            android:name=".ui.screens.AddPostActivity"
             android:exported="false"
             android:label="@string/title_activity_add_post"
             android:theme="@style/Theme.Kulik" />
         <activity
-            android:name=".GoogleSignInActivity"
+            android:name=".ui.screens.GoogleSignInActivity"
             android:exported="false"
             android:label="@string/title_activity_google_sign_in"
             android:theme="@style/Theme.Kulik" />
         <activity
-            android:name=".EmailPasswordActivity"
+            android:name=".ui.screens.EmailPasswordActivity"
             android:exported="false"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.Kulik" />
         <activity
-            android:name=".UserActivity"
+            android:name=".ui.screens.UserActivity"
             android:exported="false"
             android:label="@string/title_activity_user"
             android:theme="@style/Theme.Kulik" />
         <activity
-            android:name=".FeedActivity"
+            android:name=".ui.screens.FeedActivity"
             android:exported="false"
             android:label="@string/title_activity_feed"
             android:theme="@style/Theme.Kulik" />
         <activity
-            android:name=".ProfileActivity"
+            android:name=".ui.screens.ProfileActivity"
             android:exported="false"
             android:label="@string/title_activity_profile"
             android:theme="@style/Theme.Kulik" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.screens.HomeActivity"
             android:exported="false"
             android:label="@string/title_activity_home"
             android:theme="@style/Theme.Kulik" />

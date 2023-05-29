@@ -1,4 +1,4 @@
-package com.agrohi.kulik
+package com.agrohi.kulik.navigation
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,6 +30,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.agrohi.kulik.R
+import com.agrohi.kulik.ui.screens.AddPostScreen
+import com.agrohi.kulik.ui.screens.Explore
+import com.agrohi.kulik.ui.screens.Feed
+import com.agrohi.kulik.ui.screens.Home
+import com.agrohi.kulik.ui.screens.Profile
 import com.agrohi.kulik.ui.theme.LightGreen
 
 sealed class Screen(val route: String, val icon: ImageVector, @StringRes val resourceId: Int) {

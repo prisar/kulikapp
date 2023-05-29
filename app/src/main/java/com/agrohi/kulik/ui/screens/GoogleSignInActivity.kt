@@ -1,4 +1,4 @@
-package com.agrohi.kulik
+package com.agrohi.kulik.ui.screens
 
 import android.content.Intent
 import android.os.Build
@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.agrohi.kulik.R
 import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.google.android.gms.auth.api.signin.GoogleSignIn

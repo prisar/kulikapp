@@ -1,4 +1,4 @@
-package com.agrohi.kulik
+package com.agrohi.kulik.ui.screens
 
 import android.os.Bundle
 import android.util.Log
@@ -10,15 +10,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Card
 import androidx.compose.material.TextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -122,7 +119,9 @@ class EmailPasswordActivity : ComponentActivity() {
                             "displayName" to user.displayName,
                             "avatar" to user.photoUrl,
                             "email" to user.email,
-                            "lastSignInTime" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ").format( Date()),
+                            "lastSignInTime" to SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ").format(
+                                Date()
+                            ),
                             "emailVerified" to user.isEmailVerified,
                         ),
                         SetOptions.merge()
@@ -172,7 +171,8 @@ class EmailPasswordActivity : ComponentActivity() {
             modifier = Modifier.background(LightBlueBg)
         ) {
 
-            Column(modifier = Modifier.background(Color.White).height(300.dp)
+            Column(
+                modifier = Modifier.background(Color.White).height(300.dp)
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
