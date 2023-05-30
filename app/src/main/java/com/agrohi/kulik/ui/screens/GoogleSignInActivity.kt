@@ -147,10 +147,6 @@ class GoogleSignInActivity : ComponentActivity() {
                         ),
                         SetOptions.merge()
                     )
-//                    val intent = Intent(baseContext, HomeActivity::class.java)
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                    baseContext.startActivity(intent)
-
                     finish()
                 } else {
                     // If sign in fails, display a message to the user.

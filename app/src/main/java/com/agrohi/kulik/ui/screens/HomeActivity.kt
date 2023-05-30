@@ -36,23 +36,6 @@ import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.agrohi.kulik.ui.theme.LightGreen
 
-class HomeActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            KulikTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Home()
-                }
-            }
-        }
-    }
-}
-
 
 @Composable
 fun Home() {
