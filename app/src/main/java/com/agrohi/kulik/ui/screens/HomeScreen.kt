@@ -31,7 +31,7 @@ import com.agrohi.kulik.ui.theme.LightGreen
 
 
 @Composable
-fun Home() {
+fun HomeScreen() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,

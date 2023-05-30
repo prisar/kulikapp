@@ -25,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -33,9 +32,9 @@ import androidx.navigation.compose.rememberNavController
 import com.agrohi.kulik.R
 import com.agrohi.kulik.ui.screens.AddPostScreen
 import com.agrohi.kulik.ui.screens.ExploreScreen
-import com.agrohi.kulik.ui.screens.Feed
-import com.agrohi.kulik.ui.screens.Home
-import com.agrohi.kulik.ui.screens.Profile
+import com.agrohi.kulik.ui.screens.FeedScreen
+import com.agrohi.kulik.ui.screens.HomeScreen
+import com.agrohi.kulik.ui.screens.ProfileScreen
 import com.agrohi.kulik.ui.theme.LightGreen
 
 sealed class Screen(val route: String, val icon: ImageVector, @StringRes val resourceId: Int) {
@@ -117,9 +116,9 @@ fun AppNavGraph(
             startDestination = Screen.Home.route,
             Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Home.route) { Home() }
+            composable(Screen.Home.route) { HomeScreen() }
             composable(Screen.Explore.route) { ExploreScreen() }
-            composable(Screen.Feed.route) { Feed() }
+            composable(Screen.Feed.route) { FeedScreen() }
             composable(Screen.AddPost.route) { AddPostScreen(
                 onNavigateToFeed = { navController.navigate("feed") },
             ) }
@@ -133,16 +132,6 @@ fun AppNavGraph(
 
         }
     }
-}
-
-@Composable
-fun ProfileScreen(
-    onNavigateToHome: () -> Unit,
-    navController: NavHostController,
-    /*...*/
-) {
-    /*...*/
-    Profile(onNavigateToHome, navController)
 }
 
 object Destinations {

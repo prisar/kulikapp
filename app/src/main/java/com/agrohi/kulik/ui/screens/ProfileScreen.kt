@@ -45,7 +45,7 @@ fun signOut() {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Profile( onNavigateToHome: () -> Unit, navController: NavHostController) {
+fun ProfileScreen(onNavigateToHome: () -> Unit, navController: NavHostController) {
     val db = FirebaseFirestore.getInstance()
     var userData: String by remember { mutableStateOf("") }
     var displayName: String by remember { mutableStateOf("") }

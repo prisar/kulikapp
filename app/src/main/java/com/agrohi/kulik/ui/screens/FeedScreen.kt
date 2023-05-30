@@ -41,6 +41,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.agrohi.kulik.data.model.Post
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.agrohi.kulik.ui.theme.PinkBg
 import com.agrohi.kulik.ui.theme.Red249
@@ -50,23 +51,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 
-data class Post(
-    val id: String,
-    val name: String,
-    val avatar: String,
-    val message: String,
-    val type: String,
-    val userId: String,
-    val views: String,
-    val likes: String,
-    val photoUrl: String,
-    val video: String,
-    val thumbnail: String,
-)
-
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Feed() {
+fun FeedScreen() {
     val db = FirebaseFirestore.getInstance()
     val posts = remember { mutableStateListOf<Post>() }
     val context = LocalContext.current
