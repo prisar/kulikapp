@@ -32,7 +32,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.agrohi.kulik.R
 import com.agrohi.kulik.ui.screens.AddPostScreen
-import com.agrohi.kulik.ui.screens.Explore
+import com.agrohi.kulik.ui.screens.ExploreScreen
 import com.agrohi.kulik.ui.screens.Feed
 import com.agrohi.kulik.ui.screens.Home
 import com.agrohi.kulik.ui.screens.Profile
@@ -118,7 +118,7 @@ fun AppNavGraph(
             Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) { Home() }
-            composable(Screen.Explore.route) { Explore() }
+            composable(Screen.Explore.route) { ExploreScreen() }
             composable(Screen.Feed.route) { Feed() }
             composable(Screen.AddPost.route) { AddPostScreen(
                 onNavigateToFeed = { navController.navigate("feed") },
