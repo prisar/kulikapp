@@ -22,11 +22,6 @@
             android:label="@string/title_activity_explore"
             android:theme="@style/Theme.Kulik" />
         <activity
-            android:name=".ui.screens.AddPostActivity"
-            android:exported="false"
-            android:label="@string/title_activity_add_post"
-            android:theme="@style/Theme.Kulik" />
-        <activity
             android:name=".ui.screens.GoogleSignInActivity"
             android:exported="false"
             android:label="@string/title_activity_google_sign_in"
