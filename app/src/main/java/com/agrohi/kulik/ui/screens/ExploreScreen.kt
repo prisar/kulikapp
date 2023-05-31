@@ -22,12 +22,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.agrohi.kulik.R
 import com.agrohi.kulik.ui.theme.exploreCardBlue
 import com.agrohi.kulik.ui.theme.exploreCardYellow
 
 @Composable
-fun ExploreScreen() {
+fun ExploreScreen(
+    navController: NavController,
+) {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,

@@ -28,7 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -45,7 +45,7 @@ fun signOut() {
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ProfileScreen(onNavigateToHome: () -> Unit, navController: NavHostController) {
+fun ProfileScreen(onNavigateToHome: () -> Unit, navController: NavController) {
     val db = FirebaseFirestore.getInstance()
     var userData: String by remember { mutableStateOf("") }
     var displayName: String by remember { mutableStateOf("") }
@@ -149,10 +149,8 @@ fun ProfileScreen(onNavigateToHome: () -> Unit, navController: NavHostController
                                 Toast.LENGTH_SHORT,
                             )
                             .show()
-                        onNavigateToHome()
-//                        navController.navigate("explore") {
-//                            popUpTo("profile")
-//                        }
+//                        onNavigateToHome()
+                        navController.navigate("home")
                     }) {
                 Text("Sign out")
             }

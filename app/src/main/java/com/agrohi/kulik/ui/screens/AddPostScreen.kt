@@ -31,6 +31,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.agrohi.kulik.ui.theme.LightGreen
 import com.agrohi.kulik.ui.theme.lightReddishWhite
@@ -44,7 +45,9 @@ import java.util.Date
 private lateinit var auth: FirebaseAuth
 
 @Composable
-fun AddPostScreen(onNavigateToFeed: () -> Unit) {
+fun AddPostScreen(
+    navController: NavController,
+) {
     var message by remember { mutableStateOf("") }
     val db = FirebaseFirestore.getInstance()
     val context = LocalContext.current
@@ -126,7 +129,7 @@ fun AddPostScreen(onNavigateToFeed: () -> Unit) {
                                             Toast.LENGTH_SHORT,
                                         ).show()
 //                                        Log.d(AddPostActivity.TAG, "DocumentSnapshot written with ID: ${documentReference.id}")
-                                        onNavigateToFeed()
+                                        navController.navigate("feed")
                                     }
                                     .addOnFailureListener { e ->
 //                                        Log.w(AddPostActivity.TAG, "Error adding document", e)

@@ -116,12 +116,10 @@ fun AppNavGraph(
             startDestination = Screen.Home.route,
             Modifier.padding(innerPadding)
         ) {
-            composable(Screen.Home.route) { HomeScreen() }
-            composable(Screen.Explore.route) { ExploreScreen() }
-            composable(Screen.Feed.route) { FeedScreen() }
-            composable(Screen.AddPost.route) { AddPostScreen(
-                onNavigateToFeed = { navController.navigate("feed") },
-            ) }
+            composable(Screen.Home.route) { HomeScreen(navController = navController) }
+            composable(Screen.Explore.route) { ExploreScreen(navController = navController) }
+            composable(Screen.Feed.route) { FeedScreen(navController = navController) }
+            composable(Screen.AddPost.route) { AddPostScreen(navController = navController) }
             composable(Screen.Profile.route) {
                 ProfileScreen(
                     onNavigateToHome = { navController.navigate("home") },

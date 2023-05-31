@@ -25,13 +25,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.agrohi.kulik.R
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.agrohi.kulik.ui.theme.LightGreen
 
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    navController: NavController,
+) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,

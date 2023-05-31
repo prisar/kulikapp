@@ -41,6 +41,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.agrohi.kulik.data.model.Post
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.agrohi.kulik.ui.theme.PinkBg
@@ -53,7 +54,9 @@ import com.google.firebase.firestore.SetOptions
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun FeedScreen() {
+fun FeedScreen(
+    navController: NavController,
+) {
     val db = FirebaseFirestore.getInstance()
     val posts = remember { mutableStateListOf<Post>() }
     val context = LocalContext.current
