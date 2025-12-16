@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.gms.google.services)
+    id("kotlin-kapt")
 }
 
 android {
@@ -50,6 +52,27 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.navigation.runtime.ktx)
+
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
+    // UI (Material 2 and Icons)
+    implementation("androidx.compose.material:material:1.6.7")
+    implementation("androidx.compose.material:material-icons-extended:1.6.7")
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-messaging-ktx")
+
+    // Google Auth
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
+
+    // Image Loading (Glide)
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

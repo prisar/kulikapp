@@ -7,4 +7,10 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="LightGreen">#8BC34A</color>
+    <color name="LightBlueBg">#E3F2FD</color>
+    <color name="exploreCardBlue">#42A5F5</color>
+    <color name="exploreCardYellow">#FFEE58</color>
+    <color name="PinkBg">#FCE4EC</color>
+    <color name="Red249">#F9BDBD</color>
 </resources>

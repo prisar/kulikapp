@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Kulik</string>
+    <string name="default_notification_channel_id" translatable="false">default_channel</string>
+    <string name="default_notification_channel_name" translatable="true">Default</string>
+    <string name="fcm_message">FCM Message</string>
+    <string name="community_posts">Community Posts</string>
+    <string name="profile">Profile</string>
+    <string name="main">Home</string>
+    <string name="explore">Explore</string>
+    <string name="post">Post</string>
+    <string name="feed">Feed</string>
 </resources>
