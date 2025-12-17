@@ -20,9 +20,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Card
-import androidx.compose.material.icons.Icons
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Warning
@@ -72,9 +72,9 @@ fun FeedScreen(
                 Text(text = "You are reporting this post")
             },
             text = {
-
+                Text(text = "Are you sure you want to report this post?")
             },
-            buttons = {
+            confirmButton = {
                 Row(
                     modifier = Modifier
                         .padding(all = 8.dp)
@@ -90,6 +90,25 @@ fun FeedScreen(
                             .clickable() { openDialog.value = false }
                     ) {
                         Text("Submit")
+                    }
+                }
+            },
+            dismissButton = {
+                Row(
+                    modifier = Modifier
+                        .padding(all = 8.dp)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .width(100.dp)
+                            .clip(shape = RoundedCornerShape(15.dp))
+                            .background(Color.LightGray)
+                            .clickable() { openDialog.value = false }
+                    ) {
+                        Text("Cancel")
                     }
                 }
             }
@@ -132,7 +151,7 @@ fun FeedScreen(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.background(LightBlueBg)
+        modifier = Modifier.Modifier.background(LightBlueBg)
     ) {
 
         LazyColumn() {
@@ -140,8 +159,8 @@ fun FeedScreen(
 
                 Card(
                     shape = RoundedCornerShape(5.dp),
-//                    elevation = 1.dp,
-                    backgroundColor = Color.White,
+                    elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+                    colors = CardDefaults.cardColors(containerColor = Color.White),
                     modifier = Modifier
                         .fillMaxWidth()
 //                        .padding(bottom = 3.dp)

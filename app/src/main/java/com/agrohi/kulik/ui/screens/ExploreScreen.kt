@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,7 +53,7 @@ fun ExploreScreen(
         ) {
             Card(
                 shape = RoundedCornerShape(5.dp),
-                backgroundColor = exploreCardYellow,
+                colors = CardDefaults.cardColors(containerColor = exploreCardYellow),
                 modifier = Modifier
                     .height(180.dp)
                     .width(160.dp)
@@ -84,7 +85,7 @@ fun ExploreScreen(
 
             Card(
                 shape = RoundedCornerShape(5.dp),
-                backgroundColor = exploreCardBlue,
+                colors = CardDefaults.cardColors(containerColor = exploreCardBlue),
                 modifier = Modifier
                     .height(180.dp)
                     .width(160.dp)
@@ -124,7 +125,7 @@ fun ExploreScreen(
         ) {
             Card(
                 shape = RoundedCornerShape(5.dp),
-                backgroundColor = Color.White,
+                colors = CardDefaults.cardColors(containerColor = Color.White),
                 modifier = Modifier
                     .height(300.dp)
                     .padding(10.dp)

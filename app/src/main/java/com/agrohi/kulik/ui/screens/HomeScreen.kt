@@ -12,8 +12,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Divider
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,8 +53,8 @@ fun HomeScreen(
         )
 
         Card(shape = RoundedCornerShape(20.dp),
-            elevation = 1.dp,
-            backgroundColor = LightGreen,
+            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+            colors = CardDefaults.cardColors(containerColor = LightGreen),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 16.dp)
@@ -71,7 +72,7 @@ fun HomeScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                androidx.compose.material.Text(
+                Text(
                     text = "Do you like this app?",
                     style = TextStyle(
                         color = Color.Black,
@@ -87,8 +88,8 @@ fun HomeScreen(
 
         Card(
             shape = RoundedCornerShape(10.dp),
-            elevation = 1.dp,
-            backgroundColor = Color.White,
+            elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = 16.dp)
@@ -106,7 +107,7 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .height(20.dp),
                 ) {
-                    androidx.compose.material.Text(
+                    Text(
                         text = "History",
                         style = TextStyle(
                             color = Color.Black,
@@ -125,7 +126,7 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .height(150.dp),
                 ) {
-                    androidx.compose.material.Text(
+                    Text(
                         "Kulik is a river in Raiganj town of West bengal. It used to be an important port" +
                                 "for uttar dinajpur district. Raiganj town has developed impressively in recent years." +
                                 "There is a bird santurary besides the river.",
@@ -147,7 +148,7 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .height(50.dp),
                 ) {
-                    androidx.compose.material.Text(
+                    Text(
                         "Radhikapur railway station is getting new platform",
                         style = TextStyle(color = Color.Black),
                         modifier = Modifier.padding(12.dp)

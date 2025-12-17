@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.TextField
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -231,7 +231,7 @@ class PhoneAuthActivity : ComponentActivity() {
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(30.dp))
                     .background(Color.White)) {
-                TextField(
+                OutlinedTextField(
                     value = phoneNumber,
                     onValueChange = { phoneNumber = it },
                     label = { Text("Enter phone number") },
@@ -258,7 +258,7 @@ class PhoneAuthActivity : ComponentActivity() {
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(30.dp))
                     .background(Color.White)) {
-                TextField(
+                OutlinedTextField(
                     value = otp,
                     onValueChange = { otp = it },
                     label = { Text("Enter otp") },
