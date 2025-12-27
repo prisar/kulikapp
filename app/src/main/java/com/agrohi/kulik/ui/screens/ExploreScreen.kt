@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -32,6 +34,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.times
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.agrohi.kulik.R
@@ -220,9 +223,21 @@ fun ExploreScreen(
             }
         }
 
-        // Posts List
-        items(posts) { post ->
-            PostCard(post = post)
+        // Posts Grid
+        item {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .height((posts.size / 3 + 1) * 160.dp)
+            ) {
+                items(posts) { post ->
+                    PostCard(post = post)
+                }
+            }
         }
     }
 }
@@ -230,40 +245,15 @@ fun ExploreScreen(
 @Composable
 fun PostCard(post: Post) {
     Card(
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 8.dp)
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            // User Info
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = post.userAvatar),
-                    contentDescription = "User Avatar",
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
-                )
-
-                Spacer(modifier = Modifier.width(12.dp))
-
-                Text(
-                    text = post.userName,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W600
-                )
-            }
-
             // Post Image
             Image(
                 painter = painterResource(id = post.postImage),
@@ -271,56 +261,32 @@ fun PostCard(post: Post) {
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(200.dp)
+                    .height(100.dp)
             )
 
-            // Post Content
+            // Post Info
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(12.dp)
+                    .padding(6.dp)
             ) {
                 Text(
                     text = post.title,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.W700,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.W600,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
+                // Likes
                 Text(
-                    text = post.description,
-                    fontSize = 14.sp,
-                    color = Color.Gray,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
+                    text = "${post.likes} likes",
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.W400,
+                    color = Color.Gray
                 )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Likes and Comments
-                Row(
-                    horizontalArrangement = Arrangement.Start,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        text = "${post.likes} likes",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.W500,
-                        color = Color.DarkGray
-                    )
-
-                    Spacer(modifier = Modifier.width(16.dp))
-
-                    Text(
-                        text = "${post.comments} comments",
-                        fontSize = 14.sp,
-                        fontWeight = FontWeight.W500,
-                        color = Color.DarkGray
-                    )
-                }
             }
         }
     }
