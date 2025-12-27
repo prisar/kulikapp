@@ -1,6 +1,7 @@
 package com.agrohi.kulik.ui.screens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,81 +39,21 @@ import androidx.compose.ui.unit.times
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.agrohi.kulik.R
+import com.agrohi.kulik.model.Post
 import com.agrohi.kulik.ui.theme.exploreCardBlue
 import com.agrohi.kulik.ui.theme.exploreCardYellow
+import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
+import com.bumptech.glide.integration.compose.GlideImage
 
-data class Post(
-    val id: Int,
-    val userName: String,
-    val userAvatar: Int,
-    val postImage: Int,
-    val title: String,
-    val description: String,
-    val likes: Int,
-    val comments: Int
-)
-
-// Sample data for top posts
-fun getSamplePosts(): List<Post> {
-    return listOf(
-        Post(
-            id = 1,
-            userName = "Rahul Kumar",
-            userAvatar = R.drawable.community,
-            postImage = R.drawable.community,
-            title = "Best practices for crop rotation",
-            description = "Sharing my experience with crop rotation techniques that increased my yield by 30%",
-            likes = 45,
-            comments = 12
-        ),
-        Post(
-            id = 2,
-            userName = "Priya Singh",
-            userAvatar = R.drawable.write,
-            postImage = R.drawable.write,
-            title = "Organic farming success story",
-            description = "How I transitioned to organic farming and the lessons learned along the way",
-            likes = 67,
-            comments = 23
-        ),
-        Post(
-            id = 3,
-            userName = "Amit Patel",
-            userAvatar = R.drawable.community,
-            postImage = R.drawable.community,
-            title = "Smart irrigation techniques",
-            description = "Using technology to optimize water usage and reduce costs",
-            likes = 89,
-            comments = 34
-        ),
-        Post(
-            id = 4,
-            userName = "Sunita Devi",
-            userAvatar = R.drawable.write,
-            postImage = R.drawable.write,
-            title = "Pest management tips",
-            description = "Natural and effective ways to manage pests without harmful chemicals",
-            likes = 56,
-            comments = 18
-        ),
-        Post(
-            id = 5,
-            userName = "Vijay Sharma",
-            userAvatar = R.drawable.community,
-            postImage = R.drawable.community,
-            title = "Seasonal crop planning",
-            description = "Planning your crops according to seasons for maximum profit",
-            likes = 72,
-            comments = 27
-        )
-    )
-}
-
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ExploreScreen(
     navController: NavController,
+    viewModel: ExploreViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-    val posts = getSamplePosts()
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        viewModel.fetchPosts()
+    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize()
@@ -225,6 +166,9 @@ fun ExploreScreen(
 
         // Posts Grid
         item {
+            val postsCount = viewModel.posts.size
+            val gridHeight = if (postsCount > 0) ((postsCount / 3 + 1) * 160).dp else 0.dp
+
             LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -232,9 +176,9 @@ fun ExploreScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp)
-                    .height((posts.size / 3 + 1) * 160.dp)
+                    .height(gridHeight)
             ) {
-                items(posts) { post ->
+                items(viewModel.posts) { post ->
                     PostCard(post = post)
                 }
             }
@@ -242,6 +186,7 @@ fun ExploreScreen(
     }
 }
 
+@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun PostCard(post: Post) {
     Card(
@@ -255,14 +200,44 @@ fun PostCard(post: Post) {
             modifier = Modifier.fillMaxWidth()
         ) {
             // Post Image
-            Image(
-                painter = painterResource(id = post.postImage),
-                contentDescription = "Post Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(100.dp)
-            )
+            if (post.thumbnail.isNotEmpty()) {
+                GlideImage(
+                    model = post.thumbnail,
+                    contentDescription = post.message,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                )
+            } else if (post.photoUrl.isNotEmpty() && post.photoUrl != "null") {
+                GlideImage(
+                    model = post.photoUrl,
+                    contentDescription = post.message,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                )
+            } else {
+                // Fallback for posts without images
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .background(exploreCardYellow),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = post.message,
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.W600,
+                        maxLines = 3,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+            }
 
             // Post Info
             Column(
@@ -271,7 +246,7 @@ fun PostCard(post: Post) {
                     .padding(6.dp)
             ) {
                 Text(
-                    text = post.title,
+                    text = post.message,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.W600,
                     maxLines = 2,
