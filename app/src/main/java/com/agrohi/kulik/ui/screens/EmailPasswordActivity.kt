@@ -38,10 +38,10 @@ import com.agrohi.kulik.ui.theme.KulikTheme
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
 import java.text.SimpleDateFormat
 import java.util.Date
 

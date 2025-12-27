@@ -41,10 +41,10 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.Firebase
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.concurrent.TimeUnit
