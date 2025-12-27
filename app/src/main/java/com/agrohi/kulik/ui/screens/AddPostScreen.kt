@@ -42,6 +42,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Firebase
 import java.text.SimpleDateFormat
 import java.util.Date
+import com.agrohi.kulik.utils.PostUtils
 
 private lateinit var auth: FirebaseAuth
 
@@ -109,8 +110,7 @@ fun AddPostScreen(
                         .background(LightGreen)
                         .clickable {
                             val currentUser = auth.currentUser
-                            val createdAt =
-                                SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ").format(Date())
+                            val createdAt = PostUtils.getCurrentDateTime()
                             if (currentUser != null) {
                                 val data = hashMapOf(
                                     "avatar" to currentUser.photoUrl.toString(), // Convert Uri to String

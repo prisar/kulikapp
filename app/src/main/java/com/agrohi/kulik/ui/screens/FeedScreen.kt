@@ -52,6 +52,7 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
+import com.agrohi.kulik.utils.PostUtils
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -125,7 +126,8 @@ fun FeedScreen(
                 for (document in task.result) {
                     if (document.data["displayName"] != null && document.data["reported"] != true) {
                         val thumbnail =
-                            if (document.data["type"].toString() != "video") "" else "https://firebasestorage.googleapis.com/v0/b/agrohikulik.appspot.com/o/images%2Fposts%2F" + "videos/${document.data["userId"]}/thumbnails/${document.data["video"]}.png"
+                            if (document.data["type"].toString() != "video") "" 
+                            else PostUtils.getThumbnailUrl(document.data["userId"].toString(), document.data["video"].toString())
                         posts.add(
                             Post(
                                 document.id,
