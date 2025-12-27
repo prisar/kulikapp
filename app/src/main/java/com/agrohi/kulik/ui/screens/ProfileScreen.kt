@@ -16,7 +16,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,6 +36,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Firebase
 
@@ -50,6 +53,8 @@ fun ProfileScreen(onNavigateToHome: () -> Unit, navController: NavController) {
     var userData: String by remember { mutableStateOf("") }
     var displayName: String by remember { mutableStateOf("") }
     var avatar: String by remember { mutableStateOf("") }
+    var newPhotoUrl: String by remember { mutableStateOf("") }
+    var isEditing: Boolean by remember { mutableStateOf(false) }
     var context = LocalContext.current
 
     auth = Firebase.auth
@@ -107,7 +112,6 @@ fun ProfileScreen(onNavigateToHome: () -> Unit, navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .height(200.dp)
                     .padding(10.dp)
                     .fillMaxWidth()
                     .background(Color.White)
@@ -129,6 +133,44 @@ fun ProfileScreen(onNavigateToHome: () -> Unit, navController: NavController) {
                             .fillMaxHeight(),
                     )
                     Text(text = userData)
+
+                    if (isEditing) {
+                        TextField(
+                            value = newPhotoUrl,
+                            onValueChange = { newPhotoUrl = it },
+                            placeholder = { Text("Enter new photo URL") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(10.dp)
+                        )
+                        Button(onClick = {
+                            val profileUpdates = userProfileChangeRequest {
+                                photoUri = android.net.Uri.parse(newPhotoUrl)
+                            }
+                            currentUser.updateProfile(profileUpdates)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        avatar = newPhotoUrl
+                                        isEditing = false
+                                        Toast.makeText(context, "Photo updated", Toast.LENGTH_SHORT).show()
+                                    } else {
+                                        Toast.makeText(context, "Update failed", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                        }) {
+                            Text("Save")
+                        }
+                        Button(onClick = { isEditing = false }) {
+                            Text("Cancel")
+                        }
+                    } else {
+                        Button(onClick = {
+                            isEditing = true
+                            newPhotoUrl = avatar
+                        }) {
+                            Text("Change Photo")
+                        }
+                    }
                 }
             }
 
