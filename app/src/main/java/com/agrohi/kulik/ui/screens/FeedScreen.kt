@@ -42,6 +42,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -160,12 +162,13 @@ fun FeedScreen(
                         ) {
                             GlideImage(
                                 model = post.avatar,
-                                contentDescription = post.message,
+                                contentDescription = post.name,
                                 modifier = Modifier
                                     .size(32.dp)
                                     .clip(CircleShape)
                                     .border(2.dp, Color.Gray, CircleShape)
                                     .padding(1.dp)
+                                    .testTag("avatar")
                                     .clickable(onClick = {
                                         context.startActivity(
                                             Intent(
@@ -245,7 +248,7 @@ fun FeedScreen(
                                 .fillMaxWidth()
                         ) {
                             Icon(imageVector = Icons.Filled.ThumbUp,
-                                contentDescription = post.likes,
+                                contentDescription = "Like",
                                 tint = Red249,
                                 modifier = Modifier
                                     .size(28.dp)
@@ -259,7 +262,7 @@ fun FeedScreen(
                             )
                             Icon(
                                 imageVector = Icons.Filled.Person,
-                                contentDescription = post.likes,
+                                contentDescription = "Views",
                                 tint = Color.Black,
                                 modifier = Modifier.size(28.dp)
                             )
@@ -268,7 +271,7 @@ fun FeedScreen(
                                     .padding(5.dp)
                             )
                             Icon(imageVector = Icons.Filled.Warning,
-                                contentDescription = post.likes,
+                                contentDescription = "Report",
                                 tint = Color.LightGray,
                                 modifier = Modifier
                                     .size(28.dp)
