@@ -8,9 +8,7 @@ plugins {
 
 android {
     namespace = "com.agrohi.kulik"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.agrohi.kulik"
@@ -42,7 +40,7 @@ android {
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
     }
 }
 
@@ -56,25 +54,17 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
-
-    // Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation(libs.androidx.navigation.compose)
 
     // UI (Material 2 and Icons)
-    implementation("androidx.compose.material:material:1.6.7")
-    implementation("androidx.compose.material:material-icons-extended:1.6.7")
-
-    // Firebase
-    implementation(platform("com.google.firebase:firebase-bom:33.0.0"))
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-firestore-ktx")
-    implementation("com.google.firebase:firebase-messaging-ktx")
-
-    // Google Auth
-    implementation("com.google.android.gms:play-services-auth:21.2.0")
-
-    // Image Loading (Glide)
-    implementation("com.github.bumptech.glide:compose:1.0.0-beta01")
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.compose.material.icons.extended)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.messaging)
+    implementation(libs.play.services.auth)
+    implementation(libs.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
