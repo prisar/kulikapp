@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.gms.google.services)
     id("kotlin-kapt")
+    alias(libs.plugins.kotlinx.kover)
 }
 
 android {

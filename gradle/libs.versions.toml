@@ -17,6 +17,7 @@ navigationCompose = "2.9.6"
 navigationRuntimeKtx = "2.9.6"
 googleGmsGoogleServices = "4.4.4"
 playServicesAuth = "21.4.0"
+kover = "0.9.4"
 
 [libraries]
 androidx-compose-material = { group="androidx.compose.material", name = "material", version.ref = "material" }
@@ -49,4 +50,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+kotlinx-kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 
