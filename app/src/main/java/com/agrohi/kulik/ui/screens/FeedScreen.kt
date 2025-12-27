@@ -43,7 +43,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.agrohi.kulik.data.model.Post
+import com.agrohi.kulik.model.Post
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.agrohi.kulik.ui.theme.PinkBg
 import com.agrohi.kulik.ui.theme.Red249

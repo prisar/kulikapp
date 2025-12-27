@@ -1,4 +1,4 @@
-package com.agrohi.kulik.data.model
+package com.agrohi.kulik.model
 
 data class Post(
     val id: String,
