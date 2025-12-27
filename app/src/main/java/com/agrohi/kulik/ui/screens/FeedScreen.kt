@@ -30,9 +30,11 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,12 +60,16 @@ import com.agrohi.kulik.utils.PostUtils
 @Composable
 fun FeedScreen(
     navController: NavController,
+    viewModel: FeedViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-    val db = FirebaseFirestore.getInstance()
-    val posts = remember { mutableStateListOf<Post>() }
     val context = LocalContext.current
-
     val openDialog = remember { mutableStateOf(false) }
+    var selectedPostForReport by remember { mutableStateOf<Post?>(null) }
+    var selectedIndexForReport by remember { mutableStateOf(-1) }
+
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        viewModel.fetchPosts()
+    }
 
     if (openDialog.value) {
         AlertDialog(
@@ -89,7 +95,12 @@ fun FeedScreen(
                             .width(100.dp)
                             .clip(shape = RoundedCornerShape(15.dp))
                             .background(Red249)
-                            .clickable() { openDialog.value = false }
+                            .clickable() {
+                                selectedPostForReport?.let { post ->
+                                    viewModel.reportPost(post, selectedIndexForReport)
+                                }
+                                openDialog.value = false
+                            }
                     ) {
                         Text("Submit")
                     }
@@ -117,40 +128,6 @@ fun FeedScreen(
         )
     }
 
-    db.collection("posts")
-        .orderBy("createdAt", Query.Direction.DESCENDING)
-        .limit(100)
-        .get()
-        .addOnCompleteListener() { task ->
-            if (task.isSuccessful) {
-                for (document in task.result) {
-                    if (document.data["displayName"] != null && document.data["reported"] != true) {
-                        val thumbnail =
-                            if (document.data["type"].toString() != "video") "" 
-                            else PostUtils.getThumbnailUrl(document.data["userId"].toString(), document.data["video"].toString())
-                        posts.add(
-                            Post(
-                                document.id,
-                                document.data["displayName"].toString(),
-                                document.data["avatar"].toString(),
-                                document.data["message"].toString(),
-                                document.data["type"].toString(),
-                                document.data["userId"].toString(),
-                                document.data["views"].toString(),
-                                document.data["likes"].toString(),
-                                document.data["photoUrl"].toString(),
-                                document.data["video"].toString(),
-                                thumbnail,
-                            )
-                        )
-                    }
-//                    Log.d(ContentValues.TAG, document.id + " => " + document.data)
-                }
-            } else {
-                Log.w(ContentValues.TAG, "Error getting documents.", task.exception)
-            }
-        }
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
@@ -158,7 +135,7 @@ fun FeedScreen(
     ) {
 
         LazyColumn() {
-            itemsIndexed(posts) { index, post ->
+            itemsIndexed(viewModel.posts) { index, post ->
 
                 Card(
                     shape = RoundedCornerShape(5.dp),
@@ -166,7 +143,6 @@ fun FeedScreen(
                     colors = CardDefaults.cardColors(containerColor = Color.White),
                     modifier = Modifier
                         .fillMaxWidth()
-//                        .padding(bottom = 3.dp)
                         .height(450.dp)
                 ) {
                     Column(
@@ -274,30 +250,7 @@ fun FeedScreen(
                                 modifier = Modifier
                                     .size(28.dp)
                                     .clickable() {
-                                        db
-                                            .collection("posts")
-                                            .document(post.id)
-                                            .set(
-                                                hashMapOf(
-                                                    "likes" to post.likes
-                                                        .toString()
-                                                        .toInt() + 1
-                                                ),
-                                                SetOptions.merge()
-                                            )
-                                            .addOnSuccessListener {
-                                                Log.d(
-                                                    TAG,
-                                                    "DocumentSnapshot " + post.id + " successfully written!"
-                                                )
-                                            }
-                                            .addOnFailureListener { e ->
-                                                Log.w(
-                                                    TAG,
-                                                    "Error writing document",
-                                                    e
-                                                )
-                                            }
+                                        viewModel.likePost(post)
                                     }
                             )
                             Text(
@@ -320,31 +273,11 @@ fun FeedScreen(
                                 modifier = Modifier
                                     .size(28.dp)
                                     .clickable() {
+                                        selectedPostForReport = post
+                                        selectedIndexForReport = index
                                         openDialog.value = true
-
-                                        db
-                                            .collection("posts")
-                                            .document(post.id)
-                                            .set(hashMapOf("reported" to true), SetOptions.merge())
-                                            .addOnSuccessListener {
-//                                                Toast.makeText(context, "Post is reported successfully", Toast.LENGTH_SHORT).show()
-                                                Log.d(
-                                                    TAG,
-                                                    "DocumentSnapshot " + post.id + " successfully written!"
-                                                )
-                                            }
-                                            .addOnFailureListener { e ->
-                                                Log.w(
-                                                    TAG,
-                                                    "Error writing document",
-                                                    e
-                                                )
-                                            }
-
-                                        posts.drop(index)
                                     }
                             )
-//                            Text("Report")
                         }
                     }
                 }

@@ -49,11 +49,9 @@ private lateinit var auth: FirebaseAuth
 @Composable
 fun AddPostScreen(
     navController: NavController,
+    viewModel: AddPostViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
 ) {
-    var message by remember { mutableStateOf("") }
-    val db = FirebaseFirestore.getInstance()
     val context = LocalContext.current
-    auth = Firebase.auth
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -87,8 +85,8 @@ fun AddPostScreen(
                 }
 
                 OutlinedTextField(
-                    value = message,
-                    onValueChange = { message = it },
+                    value = viewModel.message,
+                    onValueChange = { viewModel.updateMessage(it) },
                     label = { Text("Write the description of your post") },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -96,7 +94,6 @@ fun AddPostScreen(
                         .padding(horizontal = 15.dp),
                     shape = RoundedCornerShape(5.dp),
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    // maxLines = 3, // In M3, this is usually handled by minLines and the Modifier height
                 )
 
                 Row(
@@ -109,46 +106,30 @@ fun AddPostScreen(
                         .clip(shape = RoundedCornerShape(30.dp))
                         .background(LightGreen)
                         .clickable {
-                            val currentUser = auth.currentUser
-                            val createdAt = PostUtils.getCurrentDateTime()
-                            if (currentUser != null) {
-                                val data = hashMapOf(
-                                    "avatar" to currentUser.photoUrl.toString(), // Convert Uri to String
-                                    "createdAt" to createdAt,
-                                    "displayName" to currentUser.displayName,
-                                    "likes" to 0,
-                                    "message" to message,
-                                    "shares" to 0,
-                                    "type" to "photo",
-                                    "userId" to currentUser.uid,
-                                    "views" to 0,
-                                )
-
-                                db
-                                    .collection("posts")
-                                    .add(data)
-                                    .addOnSuccessListener {
-                                        Toast.makeText(
-                                            context,
-                                            "Post created",
-                                            Toast.LENGTH_SHORT,
-                                        ).show()
-                                        navController.navigate("feed")
-                                    }
-                                    .addOnFailureListener {
-                                        Toast.makeText(
-                                            context,
-                                            "Failed to create post.",
-                                            Toast.LENGTH_SHORT,
-                                        ).show()
-                                    }
-                            } else {
-                                Toast.makeText(
-                                    context,
-                                    "Please sign in",
-                                    Toast.LENGTH_SHORT,
-                                ).show()
-                            }
+                            viewModel.createPost(
+                                onSuccess = {
+                                    Toast.makeText(
+                                        context,
+                                        "Post created",
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
+                                    navController.navigate("feed")
+                                },
+                                onFailure = {
+                                    Toast.makeText(
+                                        context,
+                                        "Failed to create post.",
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
+                                },
+                                onNotSignedIn = {
+                                    Toast.makeText(
+                                        context,
+                                        "Please sign in",
+                                        Toast.LENGTH_SHORT,
+                                    ).show()
+                                }
+                            )
                         }
                 ) {
                     Text(

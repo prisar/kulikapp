@@ -18,6 +18,8 @@ navigationRuntimeKtx = "2.9.6"
 googleGmsGoogleServices = "4.4.4"
 playServicesAuth = "21.4.0"
 kover = "0.9.4"
+mockk = "1.13.13"
+kotlinxCoroutinesTest = "1.10.1"
 
 [libraries]
 androidx-compose-material = { group="androidx.compose.material", name = "material", version.ref = "material" }
@@ -44,6 +46,8 @@ androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-te
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 play-services-auth = { group = "com.google.android.gms", name="play-services-auth", version.ref = "playServicesAuth" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
