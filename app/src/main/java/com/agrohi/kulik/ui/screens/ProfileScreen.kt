@@ -20,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,171 +31,152 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.agrohi.kulik.ui.theme.LightBlueBg
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.Firebase
-
-private lateinit var auth: FirebaseAuth
-
-fun signOut() {
-    Firebase.auth.signOut()
-}
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ProfileScreen(onNavigateToHome: () -> Unit, navController: NavController) {
-    val db = FirebaseFirestore.getInstance()
-    var userData: String by remember { mutableStateOf("") }
-    var displayName: String by remember { mutableStateOf("") }
-    var avatar: String by remember { mutableStateOf("") }
-    var newPhotoUrl: String by remember { mutableStateOf("") }
-    var isEditing: Boolean by remember { mutableStateOf(false) }
-    var context = LocalContext.current
+fun ProfileScreen(
+    onNavigateToHome: () -> Unit,
+    navController: NavController,
+    userViewModel: UserViewModel = viewModel(factory = ViewModelFactory(FirebaseAuth.getInstance()))
+) {
+    val uiState by userViewModel.uiState.collectAsState()
 
-    auth = Firebase.auth
-    var currentUser = auth.getCurrentUser()
-    if (currentUser == null) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .fillMaxWidth()
-                .background(LightBlueBg)
-        ) {
-            Text("Please login")
-            Row(verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .height(70.dp)
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .clip(shape = RoundedCornerShape(30.dp))
-                    .background(Color.White)
-                    .clickable() {
-                        context.startActivity(Intent(context, GoogleSignInActivity::class.java))
-                    }) {
-                Text("Login")
-            }
-        }
-    } else {
-//        db.collection("users")
-//            .document(currentUser.uid)
-//            .get()
-//            .addOnCompleteListener { task ->
-//                if (task.isSuccessful) {
-//                    var document = task.result
-//                    Log.d(TAG, document.id + " => " + document.data)
-//                    avatar = document.data!!["avatar"].toString()
-//                    userData = document.data!!["displayName"].toString()
-//                } else {
-//                    Log.w(TAG, "Error getting documents.", task.exception)
-//                }
-//            }
-        displayName = currentUser.displayName.toString()
-        avatar = currentUser.photoUrl.toString()
+    when (val state = uiState) {
+        is ProfileUiState.LoggedIn -> {
+            var displayName by remember { mutableStateOf(state.user.displayName ?: "") }
+            var avatar by remember { mutableStateOf(state.user.photoUrl.toString()) }
+            var newPhotoUrl by remember { mutableStateOf("") }
+            var isEditing by remember { mutableStateOf(false) }
+            val context = LocalContext.current
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxSize()
-                .fillMaxWidth()
-                .background(LightBlueBg)
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .padding(10.dp)
+                    .fillMaxSize()
                     .fillMaxWidth()
-                    .background(Color.White)
+                    .background(LightBlueBg)
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
+                        .padding(10.dp)
                         .fillMaxWidth()
+                        .background(Color.White)
                 ) {
-                    GlideImage(
-                        model = avatar,
-                        contentDescription = "avatar",
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
                         modifier = Modifier
-                            .size(64.dp)
-                            .clip(CircleShape)
-                            .border(2.dp, Color.Gray, CircleShape)
-                            .padding(5.dp)
-                            .fillMaxHeight(),
-                    )
-                    Text(text = userData)
-
-                    if (isEditing) {
-                        TextField(
-                            value = newPhotoUrl,
-                            onValueChange = { newPhotoUrl = it },
-                            placeholder = { Text("Enter new photo URL") },
+                            .fillMaxWidth()
+                    ) {
+                        GlideImage(
+                            model = avatar,
+                            contentDescription = "avatar",
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(10.dp)
+                                .size(64.dp)
+                                .clip(CircleShape)
+                                .border(2.dp, Color.Gray, CircleShape)
+                                .padding(5.dp)
+                                .fillMaxHeight(),
                         )
-                        Button(onClick = {
-                            val profileUpdates = userProfileChangeRequest {
-                                photoUri = android.net.Uri.parse(newPhotoUrl)
-                            }
-                            currentUser.updateProfile(profileUpdates)
-                                .addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        avatar = newPhotoUrl
-                                        isEditing = false
-                                        Toast.makeText(context, "Photo updated", Toast.LENGTH_SHORT).show()
-                                    } else {
-                                        Toast.makeText(context, "Update failed", Toast.LENGTH_SHORT).show()
-                                    }
+                        Text(text = displayName)
+
+                        if (isEditing) {
+                            TextField(
+                                value = newPhotoUrl,
+                                onValueChange = { newPhotoUrl = it },
+                                placeholder = { Text("Enter new photo URL") },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp)
+                            )
+                            Button(onClick = {
+                                val profileUpdates = userProfileChangeRequest {
+                                    photoUri = android.net.Uri.parse(newPhotoUrl)
                                 }
-                        }) {
-                            Text("Save")
-                        }
-                        Button(onClick = { isEditing = false }) {
-                            Text("Cancel")
-                        }
-                    } else {
-                        Button(onClick = {
-                            isEditing = true
-                            newPhotoUrl = avatar
-                        }) {
-                            Text("Change Photo")
+                                state.user.updateProfile(profileUpdates)
+                                    .addOnCompleteListener { task ->
+                                        if (task.isSuccessful) {
+                                            avatar = newPhotoUrl
+                                            isEditing = false
+                                            Toast.makeText(context, "Photo updated", Toast.LENGTH_SHORT).show()
+                                        } else {
+                                            Toast.makeText(context, "Update failed", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                            }) {
+                                Text("Save")
+                            }
+                            Button(onClick = { isEditing = false }) {
+                                Text("Cancel")
+                            }
+                        } else {
+                            Button(onClick = {
+                                isEditing = true
+                                newPhotoUrl = avatar
+                            }) {
+                                Text("Change Photo")
+                            }
                         }
                     }
                 }
-            }
 
-            Row(verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .height(70.dp)
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .clip(shape = RoundedCornerShape(30.dp))
+                        .background(Color.White)
+                        .clickable {
+                            userViewModel.signOut()
+                            Toast
+                                .makeText(
+                                    context,
+                                    "Logged out",
+                                    Toast.LENGTH_SHORT,
+                                )
+                                .show()
+                            navController.navigate("home")
+                        }) {
+                    Text("Sign out")
+                }
+            }
+        }
+        ProfileUiState.NotLoggedIn -> {
+            val context = LocalContext.current
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
                 modifier = Modifier
-                    .height(70.dp)
+                    .fillMaxSize()
                     .fillMaxWidth()
-                    .padding(10.dp)
-                    .clip(shape = RoundedCornerShape(30.dp))
-                    .background(Color.White)
-                    .clickable() {
-                        signOut()
-                        Toast
-                            .makeText(
-                                context,
-                                "Logged out",
-                                Toast.LENGTH_SHORT,
-                            )
-                            .show()
-//                        onNavigateToHome()
-                        navController.navigate("home")
-                    }) {
-                Text("Sign out")
+                    .background(LightBlueBg)
+            ) {
+                Text("Please login")
+                Row(verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .height(70.dp)
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                        .clip(shape = RoundedCornerShape(30.dp))
+                        .background(Color.White)
+                        .clickable {
+                            context.startActivity(Intent(context, GoogleSignInActivity::class.java))
+                        }) {
+                    Text("Login")
+                }
             }
         }
     }

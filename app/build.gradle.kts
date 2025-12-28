@@ -38,6 +38,8 @@ android {
         compose = true
     }
     
+    testBuildType = "debug"
+
     testOptions {
         unitTests {
             isIncludeAndroidResources = true

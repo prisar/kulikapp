@@ -96,3 +96,88 @@ GlideImage(
 - Compact cards (100dp image height) with minimal info (message + likes only)
 - Falls back to colored background with text for posts without images
 - Uses same Firebase query pattern as FeedScreen (orders by `createdAt` DESC, filters reported posts)
+
+## Testing Configuration and Best Practices
+
+### Test Build Configuration
+
+**Location:** `app/build.gradle.kts`
+
+The project is configured to run unit tests on the **debug variant only**:
+```kotlin
+testBuildType = "debug"
+```
+
+**Why:** Robolectric tests (used for Compose UI testing) can fail on release builds due to optimization and instrumentation differences. Running tests only on the debug variant ensures reliable test execution.
+
+### Running Tests
+
+**Recommended commands:**
+```bash
+# Run all unit tests (debug variant only)
+./gradlew testDebugUnitTest
+
+# Run tests with coverage report
+./gradlew koverHtmlReport
+
+# Avoid using plain 'test' command as it attempts to run release tests
+# which may fail with Robolectric
+```
+
+### Compose Test Setup Pattern
+
+**Important:** All Compose screen tests should use `createComposeRule()`, NOT `createAndroidComposeRule<MainActivity>()`.
+
+**Correct pattern:**
+```kotlin
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34])
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+class MyScreenTest {
+    @get:Rule
+    val composeTestRule = createComposeRule()  // ✓ Correct
+
+    @get:Rule
+    val mainCoroutineRule = MainDispatcherRule()
+
+    @Test
+    fun myTest() {
+        composeTestRule.setContent {
+            MyScreen(navController = mockk(relaxed = true))
+        }
+        // assertions...
+    }
+}
+```
+
+**Incorrect pattern:**
+```kotlin
+// ✗ Wrong - causes IllegalStateException
+val composeTestRule = createAndroidComposeRule<MainActivity>()
+```
+
+**Why:** `createAndroidComposeRule<MainActivity>()` automatically initializes the activity, which conflicts with calling `setContent()` manually. This causes an `IllegalStateException` at runtime.
+
+### Test File Examples
+
+All screen tests follow this pattern:
+- `HomeScreenTest.kt` - Example of correct setup
+- `AddPostScreenTest.kt` - Fixed to use `createComposeRule()`
+- `ProfileScreenTest.kt` - Tests with mocked Firebase Auth
+- `FeedScreenTest.kt` - Tests with mocked ViewModels
+- `ExploreScreenTest.kt` - Tests with mocked ViewModels
+
+### Common Test Issues and Solutions
+
+**Issue:** Tests fail with "IllegalStateException" when running
+**Solution:** Ensure test uses `createComposeRule()` instead of `createAndroidComposeRule<MainActivity>()`
+
+**Issue:** Tests fail with "RuntimeException at RoboMonitoringInstrumentation.java"
+**Solution:** This occurs on release builds. Use `./gradlew testDebugUnitTest` instead of `./gradlew test`
+
+**Issue:** Need to mock Firebase dependencies
+**Solution:** Use MockK with `relaxed = true` for FirebaseAuth, FirebaseFirestore, etc.
+```kotlin
+private val auth = mockk<FirebaseAuth>(relaxed = true)
+private val viewModel = mockk<MyViewModel>(relaxed = true)
+```
