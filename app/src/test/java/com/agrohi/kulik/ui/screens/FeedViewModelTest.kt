@@ -3,6 +3,7 @@ package com.agrohi.kulik.ui.screens
 import com.agrohi.kulik.model.Post
 import com.agrohi.kulik.utils.PostUtils
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.OnFailureListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.*

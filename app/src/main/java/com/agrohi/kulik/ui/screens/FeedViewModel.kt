@@ -64,6 +64,9 @@ class FeedViewModel(
                 // Ideally, we'd update the local state here or refresh
                 fetchPosts()
             }
+            .addOnFailureListener {
+                // Do nothing
+            }
     }
 
     fun reportPost(post: Post, index: Int) {
