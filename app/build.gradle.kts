@@ -95,3 +95,23 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
+
+kover {
+    reports {
+        filters {
+            excludes {
+                classes(
+                    "com.agrohi.kulik.MainActivity",
+                    "com.agrohi.kulik.MyFirebaseMessagingService",
+                    "com.agrohi.kulik.ui.screens.GoogleSignInActivity",
+                    "com.agrohi.kulik.ui.screens.EmailPasswordActivity",
+                    "com.agrohi.kulik.ui.screens.PhoneAuthActivity",
+                    "com.agrohi.kulik.ui.screens.UserActivity",
+                    "com.agrohi.kulik.ui.screens.UserDetailsKt",
+                    "*ComposableSingletons*",
+                    "*.BuildConfig"
+                )
+            }
+        }
+    }
+}
